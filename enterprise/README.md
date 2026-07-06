@@ -6,7 +6,7 @@ rest of the company: strategy, marketing, sales, legal, compliance, finance, peo
 success, and business operations.
 
 **This directory family is a fork addition.** It is maintained by Sahlware in the
-[Sahlwaredev/gstack](https://github.com/Sahlwaredev/gstack) fork and is intentionally not
+[Sahlwaredev/sahlstack](https://github.com/Sahlwaredev/sahlstack) fork (of upstream gstack) and is intentionally not
 part of upstream gstack.
 
 ## Layout (fork-separation rules)

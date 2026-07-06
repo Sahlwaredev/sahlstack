@@ -93,6 +93,66 @@
       "routing": "Reads all project docs, cross-references the\ndiff, builds a Diataxis coverage map (reference/how-to/tutorial/explanation),\nupdates README/ARCHITECTURE/CONTRIBUTING/CLAUDE.md to match what shipped,\ndetects architecture diagram drift, polishes CHANGELOG voice with a sell-test\nrubric, cleans up TODOS, and optionally bumps VERSION. Surfaces documentation\ndebt in the PR body. Use when asked to \"update the docs\", \"sync documentation\",\nor \"post-ship docs\". Proactively suggest after a PR is merged or code is shipped.",
       "voice_line": null
     },
+    "enterprise": {
+      "lead": "Front door to the AgentForce enterprise teams — nine expert business teams (strategy, marketing, sales, legal, compliance, finance, people, customer success, bizops) plus a board-style /exec-review.",
+      "routing": "Sets up company and team\nfoundation docs, explains what each team does, and routes work to the right\nteam. Use when asked to \"set up my enterprise teams\", \"meet the team\",\n\"which team handles X\", or \"run my company\". Proactively suggest when the\nuser asks for business (non-engineering) help with no foundation docs yet.",
+      "voice_line": null
+    },
+    "enterprise-autoplan": {
+      "lead": "Auto-pipeline for the enterprise plan — the /autoplan of the business side.",
+      "routing": "Reads the\nfull enterprise team skills from disk and runs the bootstrap (or a change-propagation\nrefresh) sequentially with auto-decisions: one consolidated fact interview up front,\nzero interruptions during, taste decisions and user challenges surfaced at a final\napproval gate, then a /exec-review board pass. Use when asked to \"build the whole\nenterprise plan\", \"enterprise autoplan\", \"run all the business teams\", or \"bootstrap\nmy company plan automatically\". Proactively suggest when a user wants the full\nenterprise bootstrap without sitting through nine interactive engagements.",
+      "voice_line": null
+    },
+    "enterprise-bizops": {
+      "lead": "Business Operations team.",
+      "routing": "Builds the metrics system (KPI dictionary, metric tree,\nexec dashboard, WBR), drafts and reviews OKRs, runs vendor evaluations and spend\naudits, writes decision memos, sets up program charters with RACI/RAID, and runs\nblameless business post-mortems. Use when asked to \"set up our metrics\",\n\"review our OKRs\", \"evaluate a vendor\", or \"write a decision memo\".\nProactively suggest when teams quote conflicting numbers, a contract is about to\nauto-renew, or a big decision is being made with nothing written down.",
+      "voice_line": null
+    },
+    "enterprise-compliance": {
+      "lead": "Compliance & privacy team.",
+      "routing": "Regime applicability scoping, privacy program buildout\n(data map, RoPA, DSAR pipeline), SOC 2 / ISO 27001 readiness, AI governance (EU AI Act,\nNIST AI RMF), incident response planning, and security questionnaire responses.\nUse when asked to \"build a privacy program\", \"get SOC 2 ready\", \"are we GDPR compliant\",\nor \"answer this security questionnaire\".\nProactively suggest when an enterprise deal stalls on security review, a feature starts\ntouching personal data, or the product ships AI features.",
+      "voice_line": null
+    },
+    "enterprise-finance": {
+      "lead": "Finance team: driver-based operating model, canonical SaaS metrics + benchmarks, burn/runway scenarios, quantitative pricing studies, fundraise packs, board decks, investor updates, and cloud cost...",
+      "routing": "Use when asked to \"build a financial model\",\n\"what's our runway\", \"prep the board deck\", or \"compute our SaaS metrics\".\nProactively suggest when the user mentions burn, a fundraise, pricing changes,\nor board prep.",
+      "voice_line": null
+    },
+    "enterprise-legal": {
+      "lead": "Full legal department for software companies: contract review and redlining, SaaS contract stack generation (NDA/MSA/ToS/SLA/DPA), IP chain-of-title and OSS license audits, corporate hygiene and...",
+      "routing": "Use when asked to \"review this contract\", \"draft an NDA\", or \"redline this MSA\".\nProactively suggest when the user pastes contract text, mentions signing anything,\nor is about to send legal terms to a counterparty.",
+      "voice_line": null
+    },
+    "enterprise-marketing": {
+      "lead": "Full marketing department: positioning sprints (April Dunford method), tiered product launches with every asset drafted, content engine with a GEO (AI-citation) layer, SEO/GEO/funnel/messaging...",
+      "routing": "Use when asked to \"write our positioning\", \"plan this launch\", \"content strategy\",\n\"audit our site\", or \"marketing plan\".\nProactively suggest when the user is about to spend on ads or write website copy\nand no positioning doc exists in docs/enterprise/marketing/.",
+      "voice_line": null
+    },
+    "enterprise-people": {
+      "lead": "HR / People Ops team.",
+      "routing": "Runs structured hiring (scorecards, loops, rubrics, offers),\ncompensation (leveling, salary bands, equity matrix), employee handbook with\nmulti-state addenda, performance cycles and PIPs, onboarding programs, and\nengagement surveys. Use when asked to \"help me hire\", \"write a job description\",\n\"salary bands\", \"employee handbook\", or \"put someone on a PIP\".\nProactively suggest when the user mentions making a hire, an offer, an HR policy\nquestion, a performance problem, or a termination.",
+      "voice_line": null
+    },
+    "enterprise-review": {
+      "lead": "Board-of-advisors review for business plans and enterprise artifacts.",
+      "routing": "Conditionally\nconvenes nine expert consultants (strategy, marketing, sales, legal, compliance, finance,\npeople, customer success, operations) against any business document, plan, directory, PR,\nor the company's whole business posture. Use when asked to \"exec review\", \"board review\",\n\"review my business plan\", \"review the launch plan\". Proactively suggest before a business\nplan, pricing change, or launch plan is executed or shared externally.",
+      "voice_line": null
+    },
+    "enterprise-sales": {
+      "lead": "Full sales/GTM team: ICP definition from closed-won evidence, sales playbook with battle cards and discovery guides, signal-based outbound with deliverability rules, pipeline hygiene and MEDDPICC...",
+      "routing": "Use when asked to \"define our ICP\", \"build a sales playbook\",\n\"set up outbound\", \"audit the pipeline\", or \"review this deal\".\nProactively suggest when the user mentions losing deals, slow sales cycles, founder-led\nsales chaos, or hiring their first sales rep.",
+      "voice_line": null
+    },
+    "enterprise-strategy": {
+      "lead": "Business strategy team: competitive intelligence, market category & TAM, monetization/pricing strategy, and growth model design.",
+      "routing": "Four modes:\n--landscape, --market, --pricing, --growth.\nUse when asked to \"analyze the competition\", \"size the market\", \"pricing strategy\",\nor \"growth model\". Proactively suggest when a founder is naming a market category,\nsetting prices, or picking a GTM motion without a written strategy.",
+      "voice_line": null
+    },
+    "enterprise-success": {
+      "lead": "Customer Success & Support team.",
+      "routing": "Builds the full CS function end-to-end: support\noperations (tiers, SLAs, escalation, macros), knowledge base + KCS program, health\nscoring with mapped save plays, onboarding, QBR/renewal programs, and voice-of-customer\nsynthesis. Use when asked to \"set up support\", \"build a health score\", \"reduce churn\",\n\"onboarding program\", \"QBR deck\", or \"voice of customer report\".\nProactively suggest when the user mentions rising ticket volume, churn, a first\nenterprise deal demanding SLAs, or \"customers keep asking the same question\".",
+      "voice_line": null
+    },
     "freeze": {
       "lead": "Restrict file edits to a specific directory for the session.",
       "routing": "Blocks Edit and\nWrite outside the allowed path. Use when debugging to prevent accidentally\n\"fixing\" unrelated code, or when you want to scope changes to one module.\nUse when asked to \"freeze\", \"restrict edits\", \"only edit this folder\",\nor \"lock down edits\".",

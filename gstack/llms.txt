@@ -13,14 +13,17 @@ Conventions:
 - [/autoplan](autoplan/SKILL.md): Auto-review pipeline — reads the full CEO, design, eng, and DX review skills from disk and runs them sequentially with auto-decisions using 6 decision principles.
 - [/benchmark](benchmark/SKILL.md): Performance regression detection using the browse daemon.
 - [/benchmark-models](benchmark-models/SKILL.md): Cross-model benchmark for gstack skills.
+- [/bizops](bizops/SKILL.md): Business Operations team.
 - [/browse](browse/SKILL.md): Fast headless browser for QA testing and site dogfooding.
 - [/canary](canary/SKILL.md): Post-deploy canary monitoring.
 - [/careful](careful/SKILL.md): Safety guardrails for destructive commands.
 - [/claude](claude/SKILL.md): Claude Code CLI wrapper for non-Claude hosts - three modes.
 - [/codex](codex/SKILL.md): OpenAI Codex CLI wrapper — three modes.
+- [/compliance](compliance/SKILL.md): Compliance & privacy team.
 - [/context-restore](context-restore/SKILL.md): Restore working context saved earlier by /context-save.
 - [/context-save](context-save/SKILL.md): Save working context.
 - [/cso](cso/SKILL.md): Chief Security Officer mode.
+- [/customer-success](customer-success/SKILL.md): Customer Success & Support team.
 - [/design-consultation](design-consultation/SKILL.md): Design consultation: understands your product, researches the landscape, proposes a complete design system (aesthetic, typography, color, layout, spacing, motion), and generates font+color preview pages.
 - [/design-html](design-html/SKILL.md): Design finalization: generates production-quality Pretext-native HTML/CSS.
 - [/design-review](design-review/SKILL.md): Designer's eye QA: finds visual inconsistency, spacing issues, hierarchy problems, AI slop patterns, and slow interactions — then fixes them.
@@ -29,6 +32,10 @@ Conventions:
 - [/diagram](diagram/SKILL.md): Turn an English description (or mermaid source) into a diagram triplet: the source, an editable .excalidraw file you can open on excalidraw.com, and rendered SVG + PNG (clean mermaid style; the .excalidraw carries the hand-drawn aesthetic).
 - [/document-generate](document-generate/SKILL.md): Generate missing documentation from scratch for a feature, module, or entire project.
 - [/document-release](document-release/SKILL.md): Post-ship documentation update.
+- [/enterprise](enterprise/SKILL.md): Front door to the AgentForce enterprise teams — nine expert business teams (strategy, marketing, sales, legal, compliance, finance, people, customer success, bizops) plus a board-style /exec-review.
+- [/enterprise-autoplan](enterprise-autoplan/SKILL.md): Auto-pipeline for the enterprise plan — the /autoplan of the business side.
+- [/exec-review](exec-review/SKILL.md): Board-of-advisors review for business plans and enterprise artifacts.
+- [/finance](finance/SKILL.md): Finance team: driver-based operating model, canonical SaaS metrics + benchmarks, burn/runway scenarios, quantitative pricing studies, fundraise packs, board decks, investor updates, and cloud cost audits.
 - [/freeze](freeze/SKILL.md): Restrict file edits to a specific directory for the session.
 - [/gstack](gstack/SKILL.md): Router for the gstack skill suite.
 - [/gstack-upgrade](gstack-upgrade/SKILL.md): Upgrade gstack to the latest version.
@@ -43,10 +50,13 @@ Conventions:
 - [/land-and-deploy](land-and-deploy/SKILL.md): Land and deploy workflow.
 - [/landing-report](landing-report/SKILL.md): Read-only queue dashboard for workspace-aware ship.
 - [/learn](learn/SKILL.md): Manage project learnings.
+- [/legal](legal/SKILL.md): Full legal department for software companies: contract review and redlining, SaaS contract stack generation (NDA/MSA/ToS/SLA/DPA), IP chain-of-title and OSS license audits, corporate hygiene and board consents, and employment document drafting — all delivered as attorney-review-ready work product.
 - [/make-pdf](make-pdf/SKILL.md): Turn any markdown file into a publication-quality PDF.
+- [/marketing](marketing/SKILL.md): Full marketing department: positioning sprints (April Dunford method), tiered product launches with every asset drafted, content engine with a GEO (AI-citation) layer, SEO/GEO/funnel/messaging audits of the live site, and quarterly GTM plans.
 - [/office-hours](office-hours/SKILL.md): YC Office Hours — two modes.
 - [/open-gstack-browser](open-gstack-browser/SKILL.md): Launch GStack Browser — AI-controlled Chromium with the sidebar extension baked in.
 - [/pair-agent](pair-agent/SKILL.md): Pair a remote AI agent with your browser.
+- [/people](people/SKILL.md): HR / People Ops team.
 - [/plan-ceo-review](plan-ceo-review/SKILL.md): CEO/founder-mode plan review.
 - [/plan-design-review](plan-design-review/SKILL.md): Designer's eye plan review — interactive, like CEO and Eng review.
 - [/plan-devex-review](plan-devex-review/SKILL.md): Interactive developer experience plan review.
@@ -56,6 +66,7 @@ Conventions:
 - [/qa-only](qa-only/SKILL.md): Report-only QA testing.
 - [/retro](retro/SKILL.md): Weekly engineering retrospective.
 - [/review](review/SKILL.md): Pre-landing PR review.
+- [/sales](sales/SKILL.md): Full sales/GTM team: ICP definition from closed-won evidence, sales playbook with battle cards and discovery guides, signal-based outbound with deliverability rules, pipeline hygiene and MEDDPICC forecast audits, and single-deal reviews with mutual action plans.
 - [/scrape](scrape/SKILL.md): Pull data from a web page.
 - [/setup-browser-cookies](setup-browser-cookies/SKILL.md): Import cookies from your real Chromium browser into the headless browse session.
 - [/setup-deploy](setup-deploy/SKILL.md): Configure deployment settings for /land-and-deploy.
@@ -63,6 +74,7 @@ Conventions:
 - [/ship](ship/SKILL.md): Ship workflow: detect + merge base branch, run tests, review diff, bump VERSION, update CHANGELOG, commit, push, create PR.
 - [/skillify](skillify/SKILL.md): Codify the most recent successful /scrape flow into a permanent browser-skill on disk.
 - [/spec](spec/SKILL.md): Turn vague intent into a precise, executable spec in five phases.
+- [/strategy](strategy/SKILL.md): Business strategy team: competitive intelligence, market category & TAM, monetization/pricing strategy, and growth model design.
 - [/sync-gbrain](sync-gbrain/SKILL.md): Keep gbrain current with this repo's code and refresh agent search guidance in CLAUDE.md.
 - [/unfreeze](unfreeze/SKILL.md): Clear the freeze boundary set by /freeze, allowing edits to all directories again.
 

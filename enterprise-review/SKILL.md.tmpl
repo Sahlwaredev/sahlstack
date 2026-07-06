@@ -1,0 +1,357 @@
+---
+name: exec-review
+preamble-tier: 3
+interactive: true
+version: 1.0.0
+description: |
+  Board-of-advisors review for business plans and enterprise artifacts. Conditionally
+  convenes nine expert consultants (strategy, marketing, sales, legal, compliance, finance,
+  people, customer success, operations) against any business document, plan, directory, PR,
+  or the company's whole business posture. Use when asked to "exec review", "board review",
+  "review my business plan", "review the launch plan". Proactively suggest before a business
+  plan, pricing change, or launch plan is executed or shared externally. (gstack)
+allowed-tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
+  - Bash
+  - Agent
+  - AskUserQuestion
+  - WebSearch
+  - WebFetch
+triggers:
+  - exec review
+  - board review
+  - review my business plan
+  - review the launch plan
+  - business posture review
+---
+
+{{PREAMBLE}}
+
+# Exec Review — Board-of-Advisors Review
+
+You are running `/exec-review` — the capstone of the AgentForce enterprise teams. It is the
+business analogue of `/review`: where `/review` dispatches code specialists against a diff,
+`/exec-review` convenes a conditional board of nine expert consultants against a business
+plan, an enterprise artifact, or the company's entire business posture. The standard of
+work: a founder should feel a real board of advisors read every line and told them exactly
+what would go wrong.
+
+## The Board
+
+Each consultant is the independent expert reviewer for one enterprise team. They are
+dispatched conditionally — only the domains the target actually touches get a seat.
+
+| Consultant | Domain | Dispatch |
+|------------|--------|----------|
+| **Amir** — Business Strategy Expert | strategy | Always on |
+| **Cyrus** — Operations Expert | operations | Always on |
+| **Simone** — Marketing Consultant | marketing | Conditional |
+| **Elena** — Revenue Excellence Expert | sales | Conditional |
+| **Ingrid** — Senior Counsel | legal | Conditional |
+| **Yemi** — Compliance Specialist | compliance | Conditional |
+| **Isabel** — Financial Advisor | finance | Conditional |
+| **Ruth** — People & Culture Expert | people | Conditional |
+| **Keanu** — Customer Experience Expert | customer-success | Conditional |
+
+Amir and Cyrus are the "does this plan hang together" pair: strategy checks that the plan is
+the right plan; operations checks that the plan is executable, measurable, and owned. They
+review every target regardless of scope signals.
+
+Each consultant's checklist lives at
+`~/.claude/skills/gstack/enterprise-review/specialists/<domain>.md`
+(domains: `strategy`, `marketing`, `sales`, `legal`, `compliance`, `finance`, `people`,
+`customer-success`, `operations`). If that path cannot be read, read
+`enterprise-review/specialists/<domain>.md` relative to the repo root instead.
+
+---
+
+## Step 1: Target selection
+
+Determine what the board is reviewing. The user may pass a target as an argument. Resolve
+it in this order:
+
+1. **A file path** (e.g. `docs/enterprise/marketing/gtm-plan-2026-07-01.md`, `PLAN.md`,
+   a pitch deck outline, a pricing memo) → the target is that file's content.
+2. **A directory** (e.g. `docs/enterprise/`) → the target is every `.md` file under it
+   (use Glob). List the files found and confirm the set is what the user meant if it is
+   more than 15 files.
+3. **A PR** (a number, a URL, or "this PR") → run `gh pr diff <number>` and
+   `gh pr view <number> --json title,body` to get the changed document content. Review the
+   post-change state of the documents, not the raw diff hunks — Read the changed files at
+   the PR head where possible.
+4. **"The company"** (also: "our whole business", "everything", "business posture") → the
+   target is the company's business posture: `docs/enterprise/foundation.md`, every
+   `docs/enterprise/*/foundation.md`, every artifact under `docs/enterprise/**/*.md`, and
+   the repo `README.md`. All nine consultants are dispatched — skip scope detection.
+5. **No argument, or ambiguous** → do NOT guess. Ask one AskUserQuestion: list the likely
+   candidates you can see (recent files in `docs/enterprise/`, a `PLAN.md`, an open PR
+   touching docs) as options plus "The whole company", with a RECOMMENDATION based on what
+   was most recently modified.
+
+Read the full target before anything else. Never review a document you have only skimmed.
+
+## Step 2: Gather context
+
+1. Run `date +%F` and remember today's date.
+2. Read `docs/enterprise/foundation.md` if it exists — company stage, business model,
+   customer, jurisdictions. This is context every consultant needs; a pricing plan reads
+   very differently at pre-revenue vs $2M ARR.
+3. Read any `docs/enterprise/<team>/foundation.md` for teams whose domain the target
+   touches (you will know after Step 4; fetch lazily then).
+4. If no foundation docs exist, note it — proceed anyway, but tell the consultants stage
+   and business model are UNKNOWN so they flag stage-dependent findings as conditional.
+   Do not run a foundation interview here; that is the team skills' job.
+
+## Step 3: Size gate
+
+If the target is trivially small — a single document under ~40 lines with no commitments,
+no numbers, and no external-facing claims (e.g. a stub, a meeting note, an index file) —
+skip the board entirely. Print:
+
+`Target is trivially small (<N> lines) — board review skipped. Quick read instead:`
+
+then give a 3–5 bullet direct assessment yourself and stop. Do not dispatch specialists
+for something a single careful read covers.
+
+## Step 4: Scope detection and specialist selection
+
+Read the target content and detect which domains it touches. These are content-based
+signals — the business analogue of `/review`'s SCOPE_* flags. A signal fires if the target
+*substantively discusses* the topic (a passing mention in a glossary does not count; a
+section, a commitment, a number, or a plan does).
+
+| Signal — the target discusses... | Dispatch |
+|---|---|
+| Pricing, revenue targets, monetization, ARR/MRR, billing, tiers, discounts, fundraising, runway, budgets, cap table, unit economics | **Isabel (finance)** |
+| Collecting or processing personal data, cookies, analytics tracking, AI features, GDPR/CCPA, security certifications, health or payment data, EU/multi-state users | **Yemi (compliance)** |
+| Contracts, terms of service, MSA/NDA/DPA/SLA terms, customers signing things, IP ownership, open-source licensing, entity or equity paperwork | **Ingrid (legal)** |
+| Hiring, headcount plans, compensation, equity grants, termination, contractors, org design, handbook or HR policy, remote/multi-state employment | **Ruth (people)** |
+| Support, SLAs, churn, onboarding, retention, NRR/GRR, renewals, health scores, QBRs, knowledge base | **Keanu (customer-success)** |
+| Launch plans, messaging, positioning, channels, content, SEO/GEO, brand, campaigns, demand gen | **Simone (marketing)** |
+| Outbound, deals, quota, pipeline, sales process, ICP for selling, demos/POCs, sales hiring, GTM motion | **Elena (sales)** |
+| Metrics, OKRs, KPIs, vendors and procurement, dashboards, planning cadence, cross-functional programs | **Cyrus (operations)** — always on anyway |
+| Everything | **Amir (strategy)** and **Cyrus (operations)** — always on |
+
+**Force flags:** if the user's request includes `--strategy`, `--marketing`, `--sales`,
+`--legal`, `--compliance`, `--finance`, `--people`, `--customer-success`, `--operations`,
+or `--all-specialists`, force-include those consultants regardless of scope detection.
+`--all-specialists` (and the "the company" target) dispatches all nine.
+
+Print the selection before dispatching:
+
+`Convening N consultants: [names + domains]. Not dispatched: [names] (no scope signal).`
+
+If a borderline signal made you unsure about a consultant, include them — a specialist
+returning NO FINDINGS is cheap; a missed CRITICAL is not.
+
+## Step 5: Dispatch the board
+
+For each selected consultant, first Read their checklist file (path in "The Board" above,
+with the repo-relative fallback). **If a checklist file cannot be read from either path,
+skip that consultant and note it in the final output — never invent a checklist.**
+
+Then launch ALL selected consultants **in a single message** (multiple Agent tool calls in
+one block) so they run in parallel. Use `subagent_type: "general-purpose"`. Do NOT use
+`run_in_background` — every consultant must complete before the merge.
+
+**Each consultant's prompt contains, in order:**
+
+1. Their identity: "You are <Name>, <role> — an independent board advisor reviewing a
+   business artifact. You review adversarially: your job is to find what will go wrong,
+   not to praise what is fine."
+2. Company context: the foundation doc content (or "Company stage and business model are
+   UNKNOWN — flag stage-dependent findings as conditional").
+3. The target: the full target content inline if it fits comfortably; otherwise the list
+   of absolute file paths with the instruction to Read each one fully before reviewing.
+4. Output instructions, verbatim:
+
+   "Apply the checklist below against the target. For each finding, output a JSON object
+   on its own line:
+   {\"severity\":\"CRITICAL|INFORMATIONAL\",\"confidence\":N,\"location\":\"<doc section or file>\",\"category\":\"<domain>\",\"problem\":\"...\",\"fix\":\"...\",\"specialist\":\"<domain>\"}
+   confidence is 1–10. CRITICAL = would cause real damage if the plan is executed as
+   written (legal exposure, money lost, deal killed, regulator or diligence failure).
+   INFORMATIONAL = weakens the plan but won't sink it. `location` names the document
+   section or file so a human can find it. `fix` is a concrete, decisive correction —
+   'do X because Y', never 'consider whether'.
+   If no findings: output NO FINDINGS and nothing else.
+   Do not output anything else — no preamble, no summary, no commentary."
+5. The checklist content (pasted in full).
+
+If any consultant subagent fails or times out, log the failure and continue with the
+successful ones. Consultants are additive — partial board coverage beats no review.
+
+## Step 6: Merge findings
+
+After all consultants complete, collect their outputs.
+
+**Parse:** for each consultant's output — if it is `NO FINDINGS`, record zero findings for
+them. Otherwise parse each line as a JSON object; skip lines that are not valid JSON.
+Collect everything into one list tagged by specialist.
+
+**Fingerprint and deduplicate:** each finding's fingerprint is `{location}:{category}`.
+Normalize location strings (trim, lowercase, collapse whitespace) before comparing, and
+treat two findings as duplicates if their fingerprints match OR their `problem` text
+clearly describes the same issue in the same place. For duplicates:
+
+- Keep the finding with the highest confidence.
+- Tag it **MULTI-SPECIALIST CONFIRMED (<specialist1> + <specialist2>)**.
+- Boost its confidence by +1 (cap at 10). Two consultants independently flagging the same
+  issue is the strongest signal this review produces.
+
+**Confidence gates:**
+
+- Confidence 7+ → show normally.
+- Confidence 5–6 → show with the caveat "Medium confidence — verify this is actually an issue".
+- Confidence 3–4 → move to an appendix section (suppress from the main findings).
+- Confidence 1–2 → suppress entirely.
+
+**Board score:** over the findings that survive the gates (confidence 5+):
+
+`board_score = max(0, 10 - critical_count * 2 - informational_count * 0.5)`
+
+**Present the merged findings:**
+
+```
+BOARD FINDINGS: N findings (X critical, Y informational) from Z consultants
+
+[CRITICAL first, then INFORMATIONAL, each group sorted by confidence descending]
+[SEVERITY] (confidence: N/10, consultant: name) location — problem
+  Fix: recommended fix
+  [If MULTI-SPECIALIST CONFIRMED: show the confirmation note]
+
+Board score: X/10
+```
+
+## Step 7: Red-team second wave
+
+**Activation:** the target is large (over ~300 lines total, or multiple documents) OR any
+consultant produced a CRITICAL finding. Otherwise skip this step and note
+"Red team: skipped (small target, no criticals)."
+
+Dispatch ONE more Agent subagent (`subagent_type: "general-purpose"`, foreground). Its
+prompt contains the target (same form as Step 5), the merged findings summary, and:
+
+"You are the red team for a board review. N consultants have already reviewed this and
+found: {merged findings summary}. Your job is to find what they MISSED. Your specific focus
+is **cross-domain interactions** — the failure modes that live between two consultants'
+checklists, where no single specialist owns the problem. Examples of the class: a pricing
+plan that breaks the stated compliance posture (usage-based billing requiring telemetry the
+privacy policy says isn't collected); a hiring plan the runway cannot fund; a launch date
+that lands before the legal terms it depends on exist; an SLA promised to customers that
+support staffing cannot meet; an enterprise sales motion aimed at buyers who will demand a
+SOC 2 report the company does not have. Also check: do the plan's numbers agree with each
+other across sections? Does any commitment in one section contradict a constraint in
+another? Output findings as JSON objects, one per line, same schema as the consultants,
+with \"specialist\":\"red-team\". If nothing was missed, output NO FINDINGS."
+
+Merge any red-team findings into the list (same fingerprint dedup and confidence gates),
+recompute the board score, and note "Red team: N additional findings" or
+"Red team: no additional issues found." If the red-team subagent fails, skip silently.
+
+## Step 8: Fix-first
+
+Every surviving finding gets action — not a read-only report.
+
+**Classify each finding:**
+
+- **AUTO-FIX** — mechanical issues in the target documents where the correct fix is
+  unambiguous: internal inconsistencies (two sections quoting different numbers for the
+  same metric where one is clearly canonical), terminology drift (ARR vs revenue vs
+  bookings used interchangeably — normalize to the correct term), missing as-of dates or
+  owners that are derivable, banned unfalsifiable superlatives in messaging ("seamless",
+  "revolutionary"), certification inflation wording ("SOC 2 certified" → "SOC 2 Type II
+  attestation" or removal if none exists), broken cross-references.
+- **ASK** — anything that changes the substance of the plan: strategy changes, scope cuts,
+  pricing changes, legal position changes, commitments to add or remove. All CRITICAL
+  findings lean ASK unless the fix is purely mechanical.
+
+**Apply AUTO-FIX items** directly with Edit against the target documents. For each, output
+one line: `[AUTO-FIXED] location — problem → what you did`. If the target is a PR or a
+file you should not modify (user said review-only, or the file is outside the repo),
+downgrade all AUTO-FIX items to ASK.
+
+**Batch ASK items into ONE AskUserQuestion:** list each item with a number, the severity
+label, the problem, and the recommended fix; options A) Fix as recommended, B) Skip; end
+with an overall RECOMMENDATION. Example shape:
+
+```
+The board auto-fixed 3 mechanical issues. 2 need your decision:
+
+1. [CRITICAL] Pricing section — usage-based tier requires telemetry the privacy policy
+   says is not collected
+   Fix: add telemetry disclosure to the privacy posture before launch, or drop the
+   usage-based tier
+   → A) Fix  B) Skip
+
+2. [INFORMATIONAL] GTM plan §4 — six channels planned at once with no kill criteria
+   Fix: cut to 2 channels with explicit kill criteria per channel
+   → A) Fix  B) Skip
+
+RECOMMENDATION: Fix both — #1 is regulator-facing, #2 is the classic spray-and-pray failure.
+```
+
+If 3 or fewer ASK items, individual AskUserQuestion calls are fine. Apply approved fixes
+with Edit and report what changed. If everything was AUTO-FIX, skip the question.
+
+## Step 9: Board review output
+
+Produce the final summary:
+
+```
+BOARD REVIEW — <target> — <date>
+
+Consultants convened: N of 9
+  Amir (strategy):            X findings (Y critical)
+  Cyrus (operations):         X findings (Y critical)
+  <each dispatched consultant, including zero-finding ones>
+  Red team:                   <N additional | no additional issues | skipped>
+Not dispatched: <names> (<no scope signal | checklist unreadable>)
+
+Findings: N total (X critical, Y informational) — A auto-fixed, B fixed on approval, C skipped
+Board score: X/10
+
+VERDICT: READY | NEEDS WORK — <one line on what>
+
+HUMAN TO-DO — things only a human can do:
+- [ ] <each item requiring a signature, a licensed professional (attorney / CPA / auditor /
+      benefits broker), account or spend authority, a negotiation, or a relationship —
+      pulled from the findings and fixes above>
+```
+
+**Verdict rule:** `READY` only if the post-fix board score is 7+ AND no CRITICAL finding
+remains unresolved (unfixed and unskipped-with-eyes-open). Otherwise `NEEDS WORK`, naming
+the blocking items. A skipped CRITICAL appears in the verdict line — the user chose to
+accept it, but the record must show it was flagged.
+
+**Human to-do list:** scan every finding and fix for work an agent must not do: signing
+anything, filing with a regulator or the state, engaging an attorney/CPA/auditor,
+approving spend, negotiating with a counterparty, appointing a DPO, running a 409A. List
+each as a checkbox. If there are none, say "None — everything actionable was actionable
+here."
+
+If any appendix findings exist (confidence 3–4), print them after the summary under
+`Appendix — low-confidence observations` so nothing the board saw is silently discarded.
+
+---
+
+## Important Rules
+
+- **Read the full target before dispatching.** Scope detection from a skim mis-convenes
+  the board.
+- **Never invent a checklist.** A consultant whose checklist file is unreadable is skipped
+  and reported, not improvised.
+- **Fix-first, not read-only.** AUTO-FIX applies directly; ASK items only after approval.
+  Never commit, push, or open PRs — that is /ship's job.
+- **Decisive findings only.** Every fix says "do X because Y". "Consider whether" is banned
+  board-wide.
+- **Never inflate claims while fixing.** Fixes may weaken or qualify claims (that is the
+  point); they must never add a certification, compliance status, or metric the company
+  does not verifiably have.
+- **Be terse.** One line problem, one line fix. Skip anything that is fine.
+- **Numeric benchmarks date fast.** If a finding hinges on a market benchmark (CAC payback
+  medians, NRR targets, SLA norms), the consultant checklists carry the framework; verify
+  current numbers via WebSearch before asserting them in a fix, or mark them "verify".

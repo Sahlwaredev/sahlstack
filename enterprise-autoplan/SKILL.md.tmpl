@@ -1,0 +1,317 @@
+---
+name: enterprise-autoplan
+preamble-tier: 3
+interactive: true
+version: 1.0.0
+description: |
+  Auto-pipeline for the enterprise plan — the /autoplan of the business side. Reads the
+  full enterprise team skills from disk and runs the bootstrap (or a change-propagation
+  refresh) sequentially with auto-decisions: one consolidated fact interview up front,
+  zero interruptions during, taste decisions and user challenges surfaced at a final
+  approval gate, then a /exec-review board pass. Use when asked to "build the whole
+  enterprise plan", "enterprise autoplan", "run all the business teams", or "bootstrap
+  my company plan automatically". Proactively suggest when a user wants the full
+  enterprise bootstrap without sitting through nine interactive engagements. (gstack)
+allowed-tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
+  - Bash
+  - Agent
+  - AskUserQuestion
+  - WebSearch
+  - WebFetch
+triggers:
+  - enterprise autoplan
+  - build the whole enterprise plan
+  - bootstrap my company plan
+  - run all business teams
+---
+
+{{PREAMBLE}}
+
+# /enterprise-autoplan — Auto-Pipeline for the Enterprise Plan
+
+One command. Company facts in, a fully drafted, consultant-reviewed, board-passed
+enterprise plan out.
+
+/enterprise-autoplan reads the full enterprise team skill files from disk and follows
+them at full depth — same personas, same frameworks, same playbooks, same consultant
+adversarial reviews as running each team manually. The only difference: intermediate
+AskUserQuestion calls are auto-decided using the 6 principles below. Company facts are
+gathered ONCE up front; taste decisions and user challenges are surfaced at a final
+approval gate.
+
+The pipeline order, stage calibration, propagation matrix, and board-pass triggers are
+defined in the enterprise process doc — read
+`~/.claude/skills/gstack/enterprise/PROCESS.md` (fallback: `enterprise/PROCESS.md`
+relative to the gstack repo) before Phase 0 and treat it as law.
+
+---
+
+## The 6 Decision Principles
+
+These rules auto-answer every intermediate question:
+
+1. **Facts are sacred** — never invent a company fact (revenue, customers, jurisdictions,
+   prices, headcount, commitments). If the Fact Intake and the repo don't answer it,
+   mark the artifact `[ASSUMPTION: <what was assumed>]` and surface it at the final gate.
+   An invented fact poisons every downstream team.
+2. **Choose completeness** — produce the whole artifact the loaded skill requires; cover
+   more failure modes, not fewer.
+3. **Right-size to stage** — apply the stage-calibration table from PROCESS.md. A
+   pre-revenue two-founder company gets the minimum set done excellently, not nine
+   half-relevant programs. Oversized process is a defect, not thoroughness.
+4. **Evidence over optimism** — ICPs from closed-won data, SLAs from historical
+   distribution, benchmarks WebSearched and dated, positioning claims with proof. Where
+   evidence is thin, say so in the artifact rather than smoothing over it.
+5. **Decisive and explicit** — when two options are viable, pick the one a founder can
+   execute this quarter and state the tiebreaker. "Consider whether" is banned.
+6. **Defer what needs humans; never block on it** — anything requiring a signature,
+   filing, negotiation, spend, or licensed professional goes on the human to-do list
+   with the draft complete, and the pipeline keeps moving.
+
+**Conflict resolution:** strategy/marketing/sales phases — P2 + P4 dominate.
+Legal/compliance/finance phases — P1 + P4 dominate (risk work errs complete and
+evidenced). Activation phases (CS/people/bizops) — P3 + P5 dominate.
+
+---
+
+## Decision Classification
+
+**Mechanical** — one clearly right answer under the principles. Auto-decide silently,
+log it. Examples: include the disqualification list in the ICP (always), run the
+consultant review (always), pick the documented market-standard liability cap as the
+draft default.
+
+**Taste** — reasonable people could disagree. Auto-decide with a recommendation, log it,
+and surface at the final gate. Enterprise work has four natural sources — treat every
+instance of these as taste, never mechanical:
+1. **Risk posture** — arbitration vs. courts, target comp percentile, certification
+   timing (Type I now vs. straight to Type II), discount authority thresholds.
+2. **Money** — the price point itself, tier boundaries, budget allocations, runway
+   levers that cut real spend.
+3. **Identity** — market category choice, brand voice, comp philosophy, "what we will
+   NOT do" entries.
+4. **Consultant disagreements** — a team's consultant (or the board) recommends
+   differently than the team's draft and has a valid point.
+
+**User Challenge** — the consultant review or the board pass concludes the user's own
+stated direction should change (their pricing model, their target customer, their
+category, a commitment recorded in the foundation). NEVER auto-decided. Present at the
+final gate with: what the user said · what the review recommends · why · what context
+the models might be missing · the cost if the models are wrong. The user's original
+direction is the default; the models must make the case for change. If the finding is a
+legal/compliance exposure rather than a preference, say so explicitly in the framing.
+
+**Never auto-decided (the two gates):**
+1. **The Fact Intake** (Phase 0) — company facts require the human.
+2. **User Challenges** — the user always has context the models lack.
+
+---
+
+## What "Auto-Decide" Means
+
+Auto-decide replaces the USER'S answers with the 6 principles. It does NOT replace the
+ANALYSIS. Every phase, persona pass, playbook, and consultant review in the loaded skill
+files runs at the same depth as the interactive version.
+
+**You MUST still:** read the repo evidence each skill's Phase 2 demands; WebSearch where
+the skill says benchmarks date fast; produce every artifact with its full required
+structure, dated filename, header block, and review-gate footer; run every team's Phase 4
+consultant adversarial review as a real Agent subagent; fix or log every finding; update
+each team's INDEX.md; log every decision to the audit trail.
+
+**You MUST NOT:** compress a persona pass into a summary sentence; write an artifact
+section as "[to be determined]"; skip a consultant review because the draft "looks
+good"; silently resolve a consultant finding that meets the Taste or User Challenge
+definition.
+
+"No findings" is valid output for a review — after it ran. State what was checked.
+
+---
+
+## Phase 0: Fact Intake + Scope
+
+1. Run `date +%F` and remember today's date.
+2. Read the process doc (path above), `docs/enterprise/foundation.md`, every
+   `docs/enterprise/*/foundation.md` and `docs/enterprise/*/INDEX.md` that exists, plus
+   the free evidence: README, docs/, package.json or equivalent, the marketing site via
+   WebFetch if a URL is discoverable.
+3. **Determine the track:**
+   - No company foundation, or `--bootstrap` → **Bootstrap** (Track A).
+   - `--refresh <change>` → **Change propagation** (Track C): match `<change>` to a row
+     of the PROCESS.md propagation matrix (ask via AskUserQuestion if ambiguous, showing
+     the matching rows). The phase list becomes that row's required re-runs plus its
+     recommended refreshes; note whether the row demands a board pass.
+   - Foundation exists and no flag → ask: refresh what changed, or re-run the full
+     bootstrap against the current foundation?
+4. **THE FACT INTAKE — the one interactive stretch.** Frame it honestly: "One interview
+   now (~10 minutes), zero interruptions after — the next question you see will be the
+   final approval gate." Ask via AskUserQuestion, one topic per question, batched by
+   theme, skipping anything the repo or existing foundations already answer:
+   - The company foundation facts (the canonical 7 sections — product, stage, business
+     model & pricing, target customer hypothesis, geography & jurisdictions,
+     constraints & commitments).
+   - The per-team fact minimums the in-scope skills' foundation interviews would ask
+     that CANNOT be inferred: current customers/deals evidence (sales), entity +
+     existing contracts (legal), data practices + vendor list confirmation (compliance,
+     confirmed against repo evidence), cash position and burn (finance), team roster
+     and hiring intent (people), support volume (customer-success).
+   - Risk-posture defaults the user may want to set now rather than at the gate:
+     "Happy for me to draft with market-standard defaults (12-month liability caps,
+     50th-percentile cash comp, SOC 2 Type I first) and surface each as a taste
+     decision at the end? A) Yes, defaults + gate review (recommended) B) Ask me these
+     as we go" — if B, those specific questions interrupt mid-run; everything else
+     still auto-decides.
+5. Write/refresh `docs/enterprise/foundation.md` in the canonical 7-section shape
+   (including `## Team activation log`). If it already existed, back it up first to
+   `~/.gstack/projects/$SLUG/enterprise-autoplan-restore-<datetime>.md`:
+
+   ```bash
+   {{SLUG_SETUP}}
+   DATETIME=$(date +%Y%m%d-%H%M%S)
+   echo "RESTORE_PATH=$HOME/.gstack/projects/$SLUG/enterprise-autoplan-restore-${DATETIME}.md"
+   ```
+
+6. Announce the plan: track, stage tier, the exact phase list with modes, and which
+   teams are out of scope (with the stage rationale). This is informational — do not
+   ask for approval here; the user chose the auto pipeline.
+
+---
+
+## Phase 1..N: Team Engagements — Sequential, Full Depth
+
+Phases execute in the PROCESS.md order — strict, never parallel (each consumes the
+prior's artifacts):
+
+| # | Bootstrap phase | Skill file to load | Modes |
+|---|-----------------|--------------------|-------|
+| 1 | Strategy | `enterprise-strategy/SKILL.md` | `--landscape` → `--market` → `--pricing` → `--growth` |
+| 2 | Positioning + ICP | `enterprise-marketing/SKILL.md`, then `enterprise-sales/SKILL.md` | `--positioning`; `--icp` |
+| 3 | Finance | `enterprise-finance/SKILL.md` | `--model` → `--runway` (+ `--pricing-study` if Phase 1 produced a WTP study spec) |
+| 4 | Legal & compliance | `enterprise-compliance/SKILL.md`, then `enterprise-legal/SKILL.md` | `--applicability`; `--paper` (stage-gated) |
+| 5 | Activation | marketing / sales / customer-success / people / bizops skill files | per the stage-calibration table |
+| 6 | Board pass | `enterprise-review/SKILL.md` | target: `docs/enterprise/` |
+
+Skill files live at `~/.claude/skills/gstack/enterprise-<team>/SKILL.md` (fallback:
+`enterprise-<team>/SKILL.md` relative to the gstack repo; the customer-success team's
+directory is `enterprise-success/`). Read the ENTIRE file, and Read each playbook the
+executed mode references.
+
+**Section skip list — when following a loaded team skill, SKIP:**
+- Preamble (run first) — already ran
+- Phase 0 foundation interviews — replaced by the Fact Intake (team foundations are
+  still WRITTEN, from intake facts, in each team's Phase 0 format, activation line
+  included)
+- Phase 1 mode selection — modes are predetermined above
+- AskUserQuestion Format / completeness / telemetry boilerplate
+- The Phase 6 "recommend the process doc / suggest next skill" handoff prose —
+  /enterprise-autoplan owns sequencing
+
+Everything else runs in full: evidence gathering, persona passes, playbook-structured
+artifacts, quality-gate tables, Phase 6 persistence (dated files, headers, review-gate
+footers, INDEX.md, human to-do lists).
+
+**Consultant reviews are mandatory.** Each team's Phase 4 runs as a real foreground
+Agent subagent (`subagent_type: "general-purpose"`, never `run_in_background`) with the
+prompt the skill specifies. Findings: mechanical → fix and log; Taste → adopt the
+recommendation, log, queue for the gate; User Challenge → queue for the gate untouched
+(ship the artifact with the user's direction plus a `<!-- USER CHALLENGE pending -->`
+marker).
+
+**Between phases**, emit a transition summary — artifacts written, consultant verdict,
+decisions logged (M mechanical / T taste / U challenges) — and verify the prior phase's
+files exist on disk before starting the next. If a phase's quality gates land on
+`NEEDS WORK`, fix and re-gate (max 2 attempts), then proceed with the gap named in the
+gate table and at the final gate.
+
+---
+
+## Decision Audit Trail
+
+Create `docs/enterprise/autoplan/<YYYY-MM-DD>-decisions.md` at Phase 0 and append one
+row per decision via Edit as you go (on disk, not in conversation memory):
+
+```markdown
+# /enterprise-autoplan Decision Audit Trail — <YYYY-MM-DD>
+| # | Phase | Decision | Class | Principle | Rationale | Rejected alternative |
+|---|-------|----------|-------|-----------|-----------|----------------------|
+```
+
+Assumptions get their own section in the same file: `## Assumptions made` — one line
+each, with the artifact and section they touch.
+
+---
+
+## Phase N (final): Board Pass
+
+Run the loaded `/exec-review` skill over `docs/enterprise/` at full depth — scope
+detection, parallel specialist dispatch, merge with confidence gates, red-team wave,
+fix-first. Override its AskUserQuestions the same way: mechanical fixes applied, taste
+findings queued, User Challenges queued. Record the board score and verdict.
+
+For `--refresh` runs, the board pass executes only if the matched propagation row
+requires it — otherwise note "board pass not triggered (single-team scope)".
+
+---
+
+## Final Approval Gate
+
+**STOP and present.** Then AskUserQuestion.
+
+```
+## /enterprise-autoplan Complete
+
+### The plan
+[2-4 sentences: what now exists in docs/enterprise/, stage tier applied, teams run]
+
+### Board verdict: [READY / NEEDS WORK] — board score [N]/10
+
+### User Challenges ([U]) — your direction stands unless you change it
+[each: you said · the review recommends · why · what we might be missing · cost if wrong]
+
+### Your Choices ([T] taste decisions)
+[each: title (phase) — drafted as X per P<n>; Y is also viable: one-line downstream impact]
+
+### Assumptions made ([A])
+[each: assumption → artifact it touches → the fact that would confirm or kill it]
+
+### Auto-decided: [M] (full log: docs/enterprise/autoplan/<date>-decisions.md)
+
+### Team scorecard
+[one line per team run: artifacts · consultant verdict · gates passed]
+
+### Human to-do list (aggregated)
+[the union of every artifact's human to-dos, grouped by team — signatures, filings,
+account connections, professional reviews]
+```
+
+Cognitive-load rules: 0 challenges or 0 taste decisions → omit that section; 8+ taste
+decisions → group by phase and warn the ambiguity was unusually high.
+
+Options: **A)** Approve as-is → suggest the review PR (`docs: enterprise bootstrap
+review package`, or the matched `--refresh` scope) and stop — committing is the user's
+call. **B)** Approve with overrides → apply the named overrides as new dated artifact
+revisions, re-present. **C)** Interrogate → answer, re-present. **D)** Revise → re-run
+only the affected phases per the propagation matrix (max 3 cycles). **E)** Discard →
+point at the restore path and the dated artifacts; delete nothing yourself.
+
+---
+
+## Important Rules
+
+- **Never abort to interactive mode.** The user chose the auto pipeline; surface taste
+  decisions at the gate instead of redirecting mid-run.
+- **Two gates only:** the Fact Intake and the Final Approval Gate (plus any risk-posture
+  questions the user opted to take inline). Everything between is silent execution.
+- **Facts are sacred** (P1). When in doubt between asking and assuming: during Phase 0
+  ask; after Phase 0 assume, mark, and surface.
+- **Full depth means full depth.** The loaded skills' persona passes, playbooks, and
+  gate tables are the spec — a summary where an artifact should be is a skip.
+- **Sequential order, always.** Strategy feeds positioning feeds ICP feeds the model —
+  running ahead produces confident fiction.
+- **Never commit, push, sign, send, file, or publish.** Artifacts land in the working
+  tree; the review PR and every external action belong to humans.

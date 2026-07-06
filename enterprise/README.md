@@ -75,6 +75,33 @@ The order to run things — and what to re-run when a plan changes — is docume
 After installing skills (`./setup`), commands may be prefixed (`/gstack-enterprise`,
 `/gstack-marketing`, …) depending on the `--no-prefix` setting.
 
+## Fork release & upgrade model
+
+**Versioning.** Fork releases bump the **4th digit** of `VERSION` (and the `package.json`
+mirror) on top of the current upstream base: upstream ships `X.Y.Z.0`, sahlstack ships
+`X.Y.Z.1`, `X.Y.Z.2`, … . **Any change to an enterprise skill, playbook, specialist, or
+process doc bumps the 4th digit in the same PR** and adds an entry to
+[`enterprise/CHANGELOG.md`](CHANGELOG.md) (fork changes never touch the root
+`CHANGELOG.md` — that stays upstream's, keeping merges clean). After merging upstream,
+reset to the new upstream base and resume the fork counter from `.1` on the next fork
+change.
+
+**Update checks.** `bin/gstack-update-check` compares the local `VERSION` against
+`Sahlwaredev/sahlstack@main` — bumping the 4th digit is what makes installs see
+`UPGRADE_AVAILABLE`. `/gstack-upgrade` and `bin/gstack-team-init` also clone from
+sahlstack, so upgrades never regress an install to upstream gstack.
+
+**Auto-upgrade policy.**
+
+| Environment | Policy | How |
+|-------------|--------|-----|
+| Local dev machines | Auto-upgrade **ON** — always current | `gstack-config set auto_upgrade true` (agentforce `dev-setup` does this) |
+| AgentForce CI runners & container images | Auto-upgrade **OFF**, checks **OFF** — versions move only when the image/action is rebuilt | `gstack-config set auto_upgrade false` + `set update_check false` (baked in by the Dockerfile / setup action) |
+
+Rationale: deterministic agent behavior in production — sahlstack can change freely
+without side effects in running agentforce infra; infra picks up new versions
+deliberately, via image rebuilds.
+
 ## The human boundary
 
 These teams frontload expert work so humans review instead of produce. They never sign,

@@ -117,7 +117,9 @@ Rules:
 
 ## 5. Deep teardown (optional depth, top threat only)
 
-Run only when selected in discovery. Sections, in order:
+Run when selected in `--landscape` discovery, or standalone as its own engagement via
+`/strategy --teardown <competitor>` (output:
+`docs/enterprise/strategy/teardown-<competitor>-<date>.md`). Sections, in order:
 
 1. **Product motion:** sign up for their trial if public; if not, reconstruct from docs,
    demo videos, changelog. Time-to-value estimate. What their onboarding optimizes for.
@@ -142,3 +144,54 @@ Run only when selected in discovery. Sections, in order:
 - [ ] Map axes are category-specific, defended in prose
 - [ ] Watch list has re-check dates and triggers for every entry
 - [ ] Anything unverifiable is marked UNKNOWN, not filled with plausible fiction
+
+## 7. Refresh protocol (--refresh)
+
+The scheduled maintenance sweep for §4's watch list, run as `/strategy --refresh`. It
+replaces the retired standalone competition-watch skill; the watch now runs through
+the strategy team. Designed to run non-interactively from CI.
+
+**Preconditions.** `docs/competition/watch-list.md` (the canonical watch list) and at
+least one landscape artifact in `docs/enterprise/strategy/` must both exist. Either
+missing → report `BLOCKED — run /strategy --landscape first` and stop. `--refresh`
+never bootstraps a watch list from scratch — building one is `--landscape`'s job.
+
+**Due-date sweep.** A competitor is DUE when its "Re-check by" date has passed.
+
+**Trigger check.** For each due competitor, one quick WebSearch pass scanning for its
+watch triggers. Scan window: since its Last checked date; if no dated boundary exists,
+the last 30 days. A competitor whose triggers may have fired is treated as due even if
+its re-check date has not passed.
+
+**Rate-limit discipline.** Re-check ONLY due/triggered competitors — a handful of
+WebSearch/WebFetch calls per competitor, never a full re-research pass. Competitors
+that are not due are not touched.
+
+**Update rules.** Update `docs/competition/watch-list.md` in place: Last checked
+dates, new re-check dates (per §4: +30d HIGH threats, +90d others), fired-trigger
+notes, superseded facts corrected with fresh source + checked date. Never silently
+delete an entry — move it to a Removed section with the reason. In-place updates to
+the watch list are an explicit exception to the dated-artifact rule; it is the living
+canonical list, exactly as the landscape engagement treats it.
+
+**Fired triggers → escalation.** Note each fired trigger prominently in the run
+report and recommend the follow-up: a scoped `--landscape` re-run or a
+`--teardown <competitor>`. File ONE `af-manager-review` issue per fired trigger
+describing the event, the source (URL + access date), and 2+ options
+(respond / monitor / re-rank).
+
+**Feature-suggestion discipline** (inherited from the retired watcher):
+- File suggestion issues ONLY for findings that map to a missing or partial capability
+  of our product.
+- Cap: 3 suggestions per competitor per run.
+- Every suggestion issue carries the `af-manager-review` + `competition` labels, links
+  the evidence with URL + access date, defaults priority to "Future consideration",
+  and ends with build / skip / build-differently options.
+- Never apply `af-approved`. Never modify product source code.
+
+**Quiet-run behavior.** Write the dated run report
+(`docs/enterprise/strategy/refresh-<date>.md`) ONLY when something changed —
+watch-list edits, fired triggers, or issues filed. A quiet run writes no artifact; the
+run summary goes in the workflow log / PR comment. When running non-interactively, no
+AskUserQuestion — proceed with recommended actions and report in prose. In CI, all
+changes flow through a branch + PR titled `docs: strategy refresh — <YYYY-MM-DD>`.

@@ -2,7 +2,7 @@
 name: strategy
 preamble-tier: 3
 interactive: true
-version: 1.0.0
+version: 1.1.0
 description: "Business strategy team: competitive intelligence, market category & TAM, monetization/pricing strategy, and growth model design. (gstack)"
 allowed-tools:
   - Read
@@ -22,6 +22,8 @@ triggers:
   - pricing strategy
   - growth model
   - tam
+  - competitor teardown
+  - competition watch
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->
@@ -29,10 +31,11 @@ triggers:
 
 ## When to invoke this skill
 
-Four modes:
---landscape, --market, --pricing, --growth.
+Six modes:
+--landscape, --market, --pricing, --growth, --teardown <competitor>, --refresh.
 Use when asked to "analyze the competition", "size the market", "pricing strategy",
-or "growth model". Proactively suggest when a founder is naming a market category,
+"growth model", "tear down a competitor", or to run the scheduled competitive
+watch sweep. Proactively suggest when a founder is naming a market category,
 setting prices, or picking a GTM motion without a written strategy.
 
 ## Preamble (run first)
@@ -861,14 +864,28 @@ to organize expertise, not for theater. Never use more than one persona voice pe
   price positioning, discount policy. (Jordan)
 - `/strategy --growth` — growth model: motion selection (PLG / sales-led / hybrid),
   north-star metric + input metrics tree, AARRR leak analysis with attached plays. (Noor)
+- `/strategy --teardown <competitor>` — standalone deep teardown of one named
+  competitor using the playbook's teardown template (product motion, pricing
+  architecture, GTM anatomy, trajectory, exploit plan) — the same depth previously
+  available only as optional depth inside `--landscape`. Soft prerequisite: a
+  landscape artifact exists. (Maya)
+- `/strategy --refresh` — scheduled competitive watch sweep: re-check ONLY the
+  watch-list entries that are due or whose triggers may have fired, update the watch
+  list in place, and escalate fired triggers. Replaces the retired standalone
+  competition-watch skill; designed to run non-interactively from CI. (Maya)
 
 Also honor a free-text request that clearly matches a mode (skip the selection question).
 "Who are we losing to?" → `--landscape`. "What should we charge?" → `--pricing`.
 "How big is this market?" → `--market`. "Should we do sales or self-serve?" → `--growth`.
+"Go deep on <competitor>" → `--teardown`. "Did anything change with our competitors?"
+→ `--refresh`.
 
 Natural order: **landscape → market → pricing → growth**. Each mode cites the ones before
-it. Enforce prerequisites softly: warn and offer to run the prerequisite first, never
-hard-block.
+it. `--teardown` and `--refresh` are follow-ons to `--landscape`. Enforce prerequisites
+softly: warn and offer to run the prerequisite first, never hard-block — with one
+exception: `--refresh` maintains the landscape's watch list, so if the watch list or a
+landscape artifact is missing it reports BLOCKED and directs to `--landscape` instead of
+bootstrapping (see the Phase 3 `--refresh` contract).
 
 **Adjacent teams (cross-references, do not duplicate their work):**
 - Positioning and messaging (April Dunford canvas, messaging house) belong to the
@@ -959,7 +976,12 @@ on what Phase 0 revealed. Selection logic:
    recommend `--pricing` (startups systematically underprice; revisit every 6–12 months).
 4. Pricing exists but no growth model, or the user's motion contradicts their ACV
    (annual contract value — the yearly price of one customer) → recommend `--growth`.
-5. If the user picks a mode whose prerequisite artifact is missing, warn once
+5. Landscape exists and any watch-list "Re-check by" date has passed → recommend
+   `--refresh` (the maintenance sweep is cheaper than a full landscape re-run and keeps
+   the freshness guarantee).
+6. A single competitor keeps surfacing — repeated head-to-head losses in discovery
+   answers, or repeated fired watch triggers — → recommend `--teardown <competitor>`.
+7. If the user picks a mode whose prerequisite artifact is missing, warn once
    ("--pricing without a landscape means no competitor price frame — I can run a quick
    landscape scan first, ~10 minutes") and offer: A) Run prerequisite first B) Proceed
    anyway with the gap flagged in the artifact.
@@ -1023,6 +1045,24 @@ ask what only the founder knows (losses, customer language, constraints).
 5. WebSearch current benchmarks for the comparison table (activation, conversion, NRR —
    net revenue retention, revenue kept plus expansion from existing customers). These
    date fast; never quote from memory without a "verify" note.
+
+### --teardown discovery (Maya)
+
+1. Confirm the target competitor if not named unambiguously in the invocation.
+2. Soft prerequisite check: a landscape artifact in `docs/enterprise/strategy/`. If
+   missing, warn once and offer to run `--landscape` first; if the user proceeds
+   anyway, pull the competitor's basics fresh via WebSearch and flag the missing map
+   context in the artifact.
+3. Ask: "What decision will this teardown feed?" (pricing response, roadmap bet, sales
+   battle card) — the exploit plan is written toward that decision.
+
+### --refresh discovery (Maya — no interview)
+
+`--refresh` has no interactive discovery. Inputs are read, not asked:
+`docs/competition/watch-list.md` (the canonical watch list) and the latest
+`competitive-landscape-*.md` artifact in `docs/enterprise/strategy/`. If either is
+missing, report `BLOCKED — run /strategy --landscape first` and stop. Never bootstrap
+a watch list from scratch — building it is `--landscape`'s job.
 
 ## Phase 3: Execution
 
@@ -1116,6 +1156,61 @@ be read, read `enterprise-strategy/playbooks/<file>.md` relative to the repo roo
    sequencing rule stated: capture existing high-intent demand (search, comparisons,
    AI-assistant citations) before spending on demand creation.
 
+### --teardown (playbook: `competitive-landscape.md`, §5)
+
+1. **Maya (Competitive Intelligence):** run the deep-teardown template from the
+   playbook against the named competitor: product motion, pricing architecture, GTM
+   anatomy, trajectory (predictions with confidence + the trigger that confirms), and
+   the exploit plan (3 concrete moves they structurally cannot follow, each with
+   evidence for "cannot follow").
+2. Cite the latest landscape artifact for map placement and threat rating. If the
+   competitor's dossier facts are >90 days old, re-verify them (WebSearch/WebFetch)
+   before building on them.
+3. Update the competitor's entry in `docs/competition/watch-list.md`: new Last checked
+   date, refreshed triggers if the teardown changed them, re-check date per threat
+   rating.
+4. Output: `docs/enterprise/strategy/teardown-<competitor>-<YYYY-MM-DD>.md`, Amir
+   review in Phase 4, INDEX update in Phase 6. Every fact:
+   `(source: <url>, checked <date>)`.
+
+### --refresh (playbook: `competitive-landscape.md`, §7)
+
+Follow the playbook's refresh protocol. The contract:
+
+1. **Read state.** `docs/competition/watch-list.md` + the latest landscape artifact in
+   `docs/enterprise/strategy/`. Either missing → report
+   `BLOCKED — run /strategy --landscape first` and stop.
+2. **Determine what is DUE:** every competitor whose "Re-check by" date has passed,
+   plus any competitor whose watch triggers may have fired — a quick WebSearch per due
+   competitor, scan window = since its Last checked date (no dated boundary → last
+   30 days).
+3. **Re-check ONLY due/triggered competitors.** Rate-limit discipline: a handful of
+   WebSearch/WebFetch calls per competitor, not a full re-research pass.
+4. **Update `docs/competition/watch-list.md` in place:** Last checked dates, new
+   re-check dates, fired-trigger notes, superseded facts corrected. Never silently
+   delete an entry — move it to a Removed section with the reason. The watch list is
+   the living canonical list: updating it in place is an explicit exception to the
+   dated-artifact rule, matching how the landscape engagement already treats it.
+5. **Fired triggers:** note each prominently in the run report and recommend the
+   follow-up (scoped `--landscape` re-run or `--teardown <competitor>`). File ONE
+   `af-manager-review` issue per fired trigger describing the event, the source
+   (URL + access date), and 2+ options (respond / monitor / re-rank).
+6. **Feature-suggestion discipline** (inherited from the retired competition-watch
+   skill): file suggestion issues ONLY for findings that map to a missing or partial
+   capability of our product. Cap: 3 per competitor per run. Every suggestion issue
+   gets the `af-manager-review` + `competition` labels, links the evidence with URL +
+   access date, defaults priority to "Future consideration", and ends with
+   build / skip / build-differently options. Never apply `af-approved`; never modify
+   product source code.
+7. **CI-friendliness:** when running non-interactively (headless/spawned session, or
+   invoked with explicit `--refresh` args by a workflow), do NOT AskUserQuestion —
+   proceed with the recommended actions and report the decisions in prose.
+8. **Artifacts:** the watch list updated in place, plus a short dated run report
+   `docs/enterprise/strategy/refresh-<YYYY-MM-DD>.md` ONLY when something changed
+   (watch-list edits, fired triggers, or issues filed). Quiet runs write no artifact —
+   the run summary goes in the workflow log / PR comment. In CI, all changes flow
+   through a branch + PR titled `docs: strategy refresh — <YYYY-MM-DD>`.
+
 ## Phase 4: Amir's adversarial review
 
 Spawn ONE Agent subagent (`subagent_type: "general-purpose"`) as the consultant. The
@@ -1145,7 +1240,11 @@ prompt must instruct:
 Then fix-first: auto-fix mechanical findings (missing dates, missing sources, arithmetic
 errors, missing rejection sections). Batch the remaining judgment calls into ONE
 AskUserQuestion: numbered, severity, problem, recommended fix, options A) Fix B) Skip,
-plus an overall RECOMMENDATION. Never skip this phase.
+plus an overall RECOMMENDATION. Never skip this phase — with one exception: a
+`--refresh` run that produced no watch-list changes and no issues may skip Phase 4
+(there is nothing to review); any `--refresh` run that changed anything goes through
+Amir like every other mode. In non-interactive `--refresh` runs, apply Amir's findings
+directly instead of AskUserQuestion and record them in the run report.
 
 ## Phase 5: Quality gates & verdict
 
@@ -1181,7 +1280,10 @@ study and real closed deals.
 1. Write each artifact to `docs/enterprise/strategy/<artifact-slug>-<YYYY-MM-DD>.md`
    using the Phase 0 date. The dated filename is the audit trail; never omit or backdate.
    Slugs: `competitive-landscape-`, `teardown-<competitor>-`, `market-category-tam-`,
-   `pricing-strategy-`, `growth-model-`.
+   `pricing-strategy-`, `growth-model-`, `refresh-`. Two `--refresh` exceptions: the
+   run report is written only when something changed (quiet runs report in the
+   workflow log / PR comment instead), and `docs/competition/watch-list.md` is updated
+   in place — the standing exception to the dated-artifact rule.
 2. Every artifact starts with this header block:
    ```markdown
    # <Artifact title>
@@ -1189,8 +1291,9 @@ study and real closed deals.
    > Engagement: <mode> · Status: DRAFT — pending human review
    > Review gate: <AI-final | Human review recommended | Licensed professional required (<which>)>
    ```
-   Default review gates: landscape → AI-final (facts are sourced and dated); market,
-   pricing, growth → Human review recommended (they commit money and direction).
+   Default review gates: landscape, teardown, refresh → AI-final (facts are sourced
+   and dated); market, pricing, growth → Human review recommended (they commit money
+   and direction).
 3. Update `docs/enterprise/strategy/INDEX.md`: one line per artifact
    (date, mode, file link, review gate). Create the file with a title line if missing.
 4. Print the handoff summary: what was produced, the verdict, and **the human to-do

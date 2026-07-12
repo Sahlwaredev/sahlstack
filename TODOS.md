@@ -45,6 +45,24 @@ a silent mistake breaks all 52 skills. High blast radius — needs its own focus
 
 ## Test infrastructure
 
+### Windows dev-box: ~1,070 upstream test failures (environmental)
+
+**Priority:** P2
+
+**What:** The full `bun test` suite fails heavily on Windows: symlink tests hit
+`EPERM` (need admin/Developer Mode), `file://` URL validation tests assume POSIX
+path semantics, design-daemon path-traversal tests expect `/etc/passwd`, and some
+migration tests require `jq`. All failures are in upstream gstack suites
+(browse server, design daemon, migrations) — none touch the fork-added
+`enterprise-*` skills. Verify these pass in Linux CI, then either gate the
+Windows-incompatible tests behind a platform check or document `bun test` as
+Linux-CI-only for this fork.
+
+**Why:** Observed during the enterprise-strategy v1.2.0 ship (2026-07-11);
+branch changed only 5 markdown/JSON files, every failing test byte-identical to
+main, so failures are provably pre-existing. Recorded per /ship triage instead
+of blocking a docs-only PR.
+
 ### Eval harness: live progress + incremental result persistence (kill the silent hour)
 
 **Priority:** P1

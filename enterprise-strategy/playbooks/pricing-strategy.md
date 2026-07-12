@@ -121,7 +121,24 @@ Decision rule: <what result moves the price, e.g. "if the VW acceptable range's 
 - Legal note: multi-year contracts and MFN (most-favored-nation) clauses can block
   changes — flag any known contracts for legal review. Not legal advice.
 
-## 7. Quality bar (self-check before Phase 4)
+## 7. Revisit triggers (mandatory section in every pricing artifact)
+
+End the artifact with a `## Revisit triggers` section using the `--refresh`
+convention (`- due YYYY-MM-DD — <what> — <how>`; canonical definition lives in the
+`/strategy` skill's `--refresh` contract). Date, at minimum:
+
+- The 6-month pricing revisit, anchored to the artifact's header date
+  (`<how>` = `/strategy --pricing`).
+- Competitor-price-frame re-verification, aligned to the watch list's re-check
+  cadence for the competitors §3 cites (`<how>` = `auto — <check>`).
+- The measurement/study gates: WTP study fielded, clean-month COGS measured,
+  founder price approval (`<how>` = `human + finance` or the responsible team).
+
+This section is what makes the artifact schedulable — the planner's `--refresh`
+sweep executes whatever lines have come due. A pricing artifact without it leaves
+every follow-through commitment on a human calendar.
+
+## 8. Quality bar (self-check before Phase 4)
 
 - [ ] Value metric scored against all four tests, in writing
 - [ ] 3 tiers, fences named per boundary, spread computed and in ~2.2–3x range
@@ -133,3 +150,5 @@ Decision rule: <what result moves the price, e.g. "if the VW acceptable range's 
 - [ ] Discount matrix present; every discount has a get
 - [ ] WTP study spec written; zero fabricated survey numbers
 - [ ] Rejected alternatives (metrics, models) named with reasons
+- [ ] `## Revisit triggers` section present with dated lines for the 6-month
+      revisit, competitor-frame re-verification, and each measurement/study gate

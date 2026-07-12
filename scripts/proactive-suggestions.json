@@ -145,7 +145,7 @@
     },
     "enterprise-strategy": {
       "lead": "Business strategy team: competitive intelligence, market category & TAM, monetization/pricing strategy, and growth model design.",
-      "routing": "Six modes:\n--landscape, --market, --pricing, --growth, --teardown <competitor>, --refresh.\nUse when asked to \"analyze the competition\", \"size the market\", \"pricing strategy\",\n\"growth model\", \"tear down a competitor\", or to run the scheduled competitive\nwatch sweep. Proactively suggest when a founder is naming a market category,\nsetting prices, or picking a GTM motion without a written strategy.",
+      "routing": "Six modes:\n--landscape, --market, --pricing, --growth, --teardown <competitor>, --refresh.\nUse when asked to \"analyze the competition\", \"size the market\", \"pricing strategy\",\n\"growth model\", \"tear down a competitor\", or to run the scheduled strategy sweep\n(watch list + artifact revisit triggers). Proactively suggest when a founder is\nnaming a market category, setting prices, or picking a GTM motion without a\nwritten strategy.",
       "voice_line": null
     },
     "enterprise-success": {

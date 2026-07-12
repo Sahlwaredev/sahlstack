@@ -92,9 +92,18 @@ to one team:
 **Revising an existing artifact** is a new dated artifact, not an edit to the old one —
 the old file stays as the audit trail. The INDEX shows the succession.
 
-Scheduled competitive re-checks run as Track B engagements too: `/strategy --refresh`
-(watch-list sweep) and `/strategy --teardown <competitor>` replace the retired
-standalone competition-watch skill.
+Scheduled re-checks run as Track B engagements too: `/strategy --refresh` and
+`/strategy --teardown <competitor>` replace the retired standalone competition-watch
+skill. `--refresh` is the strategy team's full scheduled sweep — the AgentForce
+planner runs it on cadence, and it executes both the watch-list sweep and every dated
+revisit trigger across the team's artifacts (pricing revisits, measurement windows,
+publish-gate follow-ups). The `## Revisit triggers` convention is defined once, in
+the `/strategy` skill's `--refresh` contract — every team's artifacts should carry
+the section so the planner can schedule the follow-through instead of relying on a
+human calendar. Scope honestly: today only the STRATEGY team has a scheduled sweep
+that executes triggers. Other teams' `## Revisit triggers` sections are recorded but
+NOT yet machine-executed — until a team gains its own `--refresh` equivalent, its
+dated commitments still need a human (or a planner follow-up issue) to fire them.
 
 ---
 

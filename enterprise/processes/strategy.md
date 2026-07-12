@@ -112,12 +112,15 @@ The PR merge unlocks the human to-do checklist each artifact ends with. Standard
 
 ## Operating cadence
 
-- **Monthly (30 min):** watch-list sweep — re-check HIGH-threat competitors; fire any
-  triggered re-research.
+- **Monthly (30 min):** the scheduled `/strategy --refresh` sweep — re-checks due
+  watch-list entries (HIGH-threat competitors monthly) and executes every dated
+  `## Revisit triggers` line that has come due across the team's artifacts
+  (pricing revisits, measurement windows, publish-gate follow-ups).
 - **Quarterly:** re-run `--growth` leak analysis against fresh funnel numbers; review
   the discount exception log.
-- **Every 6–12 months:** `--pricing` revisit (calendar it at each pricing artifact's
-  creation).
+- **Every 6–12 months:** `--pricing` revisit — dated in the pricing artifact's
+  mandatory `## Revisit triggers` section at creation, so the `--refresh` sweep fires
+  it when due instead of relying on a human calendar.
 - **Event-driven:** competitor ships a fence feature, changes price, or raises →
   scoped `--landscape` re-run; lost deal to a competitor → dossier update; category
   confusion in 3+ sales conversations → `--market` re-run.

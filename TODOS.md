@@ -59,7 +59,7 @@ Windows-incompatible tests behind a platform check or document `bun test` as
 Linux-CI-only for this fork.
 
 **Why:** Observed during the enterprise-strategy v1.2.0 ship (2026-07-11);
-branch changed only 5 markdown/JSON files, every failing test byte-identical to
+branch changed only markdown/JSON files, every failing test byte-identical to
 main, so failures are provably pre-existing. Recorded per /ship triage instead
 of blocking a docs-only PR.
 

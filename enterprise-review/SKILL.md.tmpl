@@ -2,12 +2,12 @@
 name: exec-review
 preamble-tier: 3
 interactive: true
-version: 1.0.0
+version: 1.1.0
 description: |
   Board-of-advisors review for business plans and enterprise artifacts. Conditionally
-  convenes nine expert consultants (strategy, marketing, sales, legal, compliance, finance,
-  people, customer success, operations) against any business document, plan, directory, PR,
-  or the company's whole business posture. Use when asked to "exec review", "board review",
+  convenes ten expert consultants (strategy, marketing, sales, legal, compliance, finance,
+  people, customer success, operations, deployment) against any business document, plan,
+  directory, PR, or the company's whole business posture. Use when asked to "exec review", "board review",
   "review my business plan", "review the launch plan". Proactively suggest before a business
   plan, pricing change, or launch plan is executed or shared externally. (gstack)
 allowed-tools:
@@ -35,7 +35,7 @@ triggers:
 
 You are running `/exec-review` — the capstone of the AgentForce enterprise teams. It is the
 business analogue of `/review`: where `/review` dispatches code specialists against a diff,
-`/exec-review` convenes a conditional board of nine expert consultants against a business
+`/exec-review` convenes a conditional board of ten expert consultants against a business
 plan, an enterprise artifact, or the company's entire business posture. The standard of
 work: a founder should feel a real board of advisors read every line and told them exactly
 what would go wrong.
@@ -56,6 +56,7 @@ dispatched conditionally — only the domains the target actually touches get a 
 | **Isabel** — Financial Advisor | finance | Conditional |
 | **Ruth** — People & Culture Expert | people | Conditional |
 | **Keanu** — Customer Experience Expert | customer-success | Conditional |
+| **Bram** — Release Engineering Consultant | deployment | Conditional |
 
 Amir and Cyrus are the "does this plan hang together" pair: strategy checks that the plan is
 the right plan; operations checks that the plan is executable, measurable, and owned. They
@@ -64,7 +65,7 @@ review every target regardless of scope signals.
 Each consultant's checklist lives at
 `~/.claude/skills/gstack/enterprise-review/specialists/<domain>.md`
 (domains: `strategy`, `marketing`, `sales`, `legal`, `compliance`, `finance`, `people`,
-`customer-success`, `operations`). If that path cannot be read, read
+`customer-success`, `operations`, `deployment`). If that path cannot be read, read
 `enterprise-review/specialists/<domain>.md` relative to the repo root instead.
 
 ---
@@ -86,7 +87,7 @@ it in this order:
 4. **"The company"** (also: "our whole business", "everything", "business posture") → the
    target is the company's business posture: `docs/enterprise/foundation.md`, every
    `docs/enterprise/*/foundation.md`, every artifact under `docs/enterprise/**/*.md`, and
-   the repo `README.md`. All nine consultants are dispatched — skip scope detection.
+   the repo `README.md`. All ten consultants are dispatched — skip scope detection.
 5. **No argument, or ambiguous** → do NOT guess. Ask one AskUserQuestion: list the likely
    candidates you can see (recent files in `docs/enterprise/`, a `PLAN.md`, an open PR
    touching docs) as options plus "The whole company", with a RECOMMENDATION based on what
@@ -133,13 +134,14 @@ section, a commitment, a number, or a plan does).
 | Support, SLAs, churn, onboarding, retention, NRR/GRR, renewals, health scores, QBRs, knowledge base | **Keanu (customer-success)** |
 | Launch plans, messaging, positioning, channels, content, SEO/GEO, brand, campaigns, demand gen | **Simone (marketing)** |
 | Outbound, deals, quota, pipeline, sales process, ICP for selling, demos/POCs, sales hiring, GTM motion | **Elena (sales)** |
+| Deployment, CI/CD, release process, environments (dev/staging/prod), infrastructure and its cost, uptime/SLA commitments, rollback, incident response, launch/ship dates with operational dependencies | **Bram (deployment)** |
 | Metrics, OKRs, KPIs, vendors and procurement, dashboards, planning cadence, cross-functional programs | **Cyrus (operations)** — always on anyway |
 | Everything | **Amir (strategy)** and **Cyrus (operations)** — always on |
 
 **Force flags:** if the user's request includes `--strategy`, `--marketing`, `--sales`,
 `--legal`, `--compliance`, `--finance`, `--people`, `--customer-success`, `--operations`,
-or `--all-specialists`, force-include those consultants regardless of scope detection.
-`--all-specialists` (and the "the company" target) dispatches all nine.
+`--deployment`, or `--all-specialists`, force-include those consultants regardless of
+scope detection. `--all-specialists` (and the "the company" target) dispatches all ten.
 
 Print the selection before dispatching:
 
@@ -304,7 +306,7 @@ Produce the final summary:
 ```
 BOARD REVIEW — <target> — <date>
 
-Consultants convened: N of 9
+Consultants convened: N of 10
   Amir (strategy):            X findings (Y critical)
   Cyrus (operations):         X findings (Y critical)
   <each dispatched consultant, including zero-finding ones>

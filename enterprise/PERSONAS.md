@@ -88,11 +88,24 @@ convene together as the board in `/exec-review`.
 | Bianca | Business Analyst |
 | **Cyrus** | **Operations Expert (consultant)** |
 
+### Deployment — `/deployment` (`enterprise-deployment/`) *(new team)*
+| Persona | Role |
+|---------|------|
+| Kenji | Release Manager (lead) |
+| Astrid | Platform & Infrastructure Engineer |
+| Ravi | CI/CD Engineer |
+| Imani | Site Reliability Engineer |
+| **Bram** | **Release Engineering Consultant (consultant)** |
+
+Kenji is also the persona of the AgentForce `sahl-deploy-manager` runtime agent (the
+Company-tier deploy workflow in the agentforce repo) — the same release manager who
+designs the plan here executes it there, under the plan's approval gates.
+
 ## Front door & board
 
 - **Gabe** — MC and point of contact for all teams (`/enterprise`, `enterprise/`).
-- `/exec-review` (`enterprise-review/`) — convenes the nine consultants (Amir, Simone, Elena,
-  Ingrid, Yemi, Isabel, Ruth, Keanu, Cyrus) as a conditional specialist board over any
+- `/exec-review` (`enterprise-review/`) — convenes the ten consultants (Amir, Simone, Elena,
+  Ingrid, Yemi, Isabel, Ruth, Keanu, Cyrus, Bram) as a conditional specialist board over any
   business plan or artifact.
 
 ## Conventions

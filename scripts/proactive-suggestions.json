@@ -94,13 +94,13 @@
       "voice_line": null
     },
     "enterprise": {
-      "lead": "Front door to the AgentForce enterprise teams — nine expert business teams (strategy, marketing, sales, legal, compliance, finance, people, customer success, bizops) plus a board-style /exec-review.",
+      "lead": "Front door to the AgentForce enterprise teams — ten expert teams (strategy, marketing, sales, legal, compliance, finance, people, customer success, bizops, deployment) plus a board-style /exec-review.",
       "routing": "Sets up company and team\nfoundation docs, explains what each team does, and routes work to the right\nteam. Use when asked to \"set up my enterprise teams\", \"meet the team\",\n\"which team handles X\", or \"run my company\". Proactively suggest when the\nuser asks for business (non-engineering) help with no foundation docs yet.",
       "voice_line": null
     },
     "enterprise-autoplan": {
       "lead": "Auto-pipeline for the enterprise plan — the /autoplan of the business side.",
-      "routing": "Reads the\nfull enterprise team skills from disk and runs the bootstrap (or a change-propagation\nrefresh) sequentially with auto-decisions: one consolidated fact interview up front,\nzero interruptions during, taste decisions and user challenges surfaced at a final\napproval gate, then a /exec-review board pass. Use when asked to \"build the whole\nenterprise plan\", \"enterprise autoplan\", \"run all the business teams\", or \"bootstrap\nmy company plan automatically\". Proactively suggest when a user wants the full\nenterprise bootstrap without sitting through nine interactive engagements.",
+      "routing": "Reads the\nfull enterprise team skills from disk and runs the bootstrap (or a change-propagation\nrefresh) sequentially with auto-decisions: one consolidated fact interview up front,\nzero interruptions during, taste decisions and user challenges surfaced at a final\napproval gate, then a /exec-review board pass. Use when asked to \"build the whole\nenterprise plan\", \"enterprise autoplan\", \"run all the business teams\", or \"bootstrap\nmy company plan automatically\". Proactively suggest when a user wants the full\nenterprise bootstrap without sitting through ten interactive engagements.",
       "voice_line": null
     },
     "enterprise-bizops": {
@@ -111,6 +111,11 @@
     "enterprise-compliance": {
       "lead": "Compliance & privacy team.",
       "routing": "Regime applicability scoping, privacy program buildout\n(data map, RoPA, DSAR pipeline), SOC 2 / ISO 27001 readiness, AI governance (EU AI Act,\nNIST AI RMF), incident response planning, and security questionnaire responses.\nUse when asked to \"build a privacy program\", \"get SOC 2 ready\", \"are we GDPR compliant\",\nor \"answer this security questionnaire\".\nProactively suggest when an enterprise deal stalls on security review, a feature starts\ntouching personal data, or the product ships AI features.",
+      "voice_line": null
+    },
+    "enterprise-deployment": {
+      "lead": "Full deployment team: greenfield deployment design (stack selection with real cost math, environment topology, branching strategy, dev→test→beta→prod promotion with blocking approval gates),...",
+      "routing": "Use when asked to \"design our deployment process\",\n\"pick a stack\", \"set up environments\", \"audit our pipeline\", \"are we ready to ship\",\nor \"write the deploy runbook\". Proactively suggest when a project is about to ship\nto production and no deployment plan exists in docs/enterprise/deployment/.",
       "voice_line": null
     },
     "enterprise-finance": {
@@ -135,7 +140,7 @@
     },
     "enterprise-review": {
       "lead": "Board-of-advisors review for business plans and enterprise artifacts.",
-      "routing": "Conditionally\nconvenes nine expert consultants (strategy, marketing, sales, legal, compliance, finance,\npeople, customer success, operations) against any business document, plan, directory, PR,\nor the company's whole business posture. Use when asked to \"exec review\", \"board review\",\n\"review my business plan\", \"review the launch plan\". Proactively suggest before a business\nplan, pricing change, or launch plan is executed or shared externally.",
+      "routing": "Conditionally\nconvenes ten expert consultants (strategy, marketing, sales, legal, compliance, finance,\npeople, customer success, operations, deployment) against any business document, plan,\ndirectory, PR, or the company's whole business posture. Use when asked to \"exec review\", \"board review\",\n\"review my business plan\", \"review the launch plan\". Proactively suggest before a business\nplan, pricing change, or launch plan is executed or shared externally.",
       "voice_line": null
     },
     "enterprise-sales": {

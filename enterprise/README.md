@@ -1,9 +1,10 @@
 # AgentForce Enterprise Teams
 
-Nine expert business teams plus a board-style review, built as gstack skills. gstack covers
+Ten expert teams plus a board-style review, built as gstack skills. gstack covers
 the engineering department (/review, /qa, /cso, /ship, design skills); this suite covers the
 rest of the company: strategy, marketing, sales, legal, compliance, finance, people, customer
-success, and business operations.
+success, business operations, and deployment (the release process and gates — execution
+still routes to /ship, /land-and-deploy, and /canary).
 
 **This directory family is a fork addition.** It is maintained by Sahlware in the
 [Sahlwaredev/sahlstack](https://github.com/Sahlwaredev/sahlstack) fork (of upstream gstack) and is intentionally not
@@ -16,7 +17,7 @@ part of upstream gstack.
 | `enterprise/` | This directory — the `/enterprise` front-door skill (Gabe), persona roster, process pack |
 | `enterprise/PROCESS.md` | **The company-level process** — bootstrap order, incremental engagements, change-propagation matrix, board-pass triggers |
 | `enterprise/processes/` | Per-team operating processes (the enterprise analogue of a dev process doc) |
-| `enterprise-strategy/` … `enterprise-bizops/` | One directory per team skill (`SKILL.md.tmpl` + `playbooks/`) |
+| `enterprise-strategy/` … `enterprise-deployment/` | One directory per team skill (`SKILL.md.tmpl` + `playbooks/`) |
 | `enterprise-review/` | `/exec-review` — conditional specialist board review (`specialists/` checklists) |
 | `enterprise-autoplan/` | `/enterprise-autoplan` — the /autoplan of the business side: full bootstrap or propagation refresh with auto-decisions |
 

@@ -24,6 +24,7 @@ Conventions:
 - [/context-save](context-save/SKILL.md): Save working context.
 - [/cso](cso/SKILL.md): Chief Security Officer mode.
 - [/customer-success](customer-success/SKILL.md): Customer Success & Support team.
+- [/deployment](deployment/SKILL.md): Full deployment team: greenfield deployment design (stack selection with real cost math, environment topology, branching strategy, dev→test→beta→prod promotion with blocking approval gates), existing-pipeline audits verified with the customer and scored against DORA, per-release readiness reviews that gate cross-team launch work, and deploy/rollback runbooks.
 - [/design-consultation](design-consultation/SKILL.md): Design consultation: understands your product, researches the landscape, proposes a complete design system (aesthetic, typography, color, layout, spacing, motion), and generates font+color preview pages.
 - [/design-html](design-html/SKILL.md): Design finalization: generates production-quality Pretext-native HTML/CSS.
 - [/design-review](design-review/SKILL.md): Designer's eye QA: finds visual inconsistency, spacing issues, hierarchy problems, AI slop patterns, and slow interactions — then fixes them.
@@ -32,7 +33,7 @@ Conventions:
 - [/diagram](diagram/SKILL.md): Turn an English description (or mermaid source) into a diagram triplet: the source, an editable .excalidraw file you can open on excalidraw.com, and rendered SVG + PNG (clean mermaid style; the .excalidraw carries the hand-drawn aesthetic).
 - [/document-generate](document-generate/SKILL.md): Generate missing documentation from scratch for a feature, module, or entire project.
 - [/document-release](document-release/SKILL.md): Post-ship documentation update.
-- [/enterprise](enterprise/SKILL.md): Front door to the AgentForce enterprise teams — nine expert business teams (strategy, marketing, sales, legal, compliance, finance, people, customer success, bizops) plus a board-style /exec-review.
+- [/enterprise](enterprise/SKILL.md): Front door to the AgentForce enterprise teams — ten expert teams (strategy, marketing, sales, legal, compliance, finance, people, customer success, bizops, deployment) plus a board-style /exec-review.
 - [/enterprise-autoplan](enterprise-autoplan/SKILL.md): Auto-pipeline for the enterprise plan — the /autoplan of the business side.
 - [/exec-review](exec-review/SKILL.md): Board-of-advisors review for business plans and enterprise artifacts.
 - [/finance](finance/SKILL.md): Finance team: driver-based operating model, canonical SaaS metrics + benchmarks, burn/runway scenarios, quantitative pricing studies, fundraise packs, board decks, investor updates, and cloud cost audits.

@@ -2,8 +2,8 @@
 name: enterprise
 preamble-tier: 3
 interactive: true
-version: 1.0.0
-description: Front door to the AgentForce enterprise teams — nine expert business teams (strategy, marketing, sales, legal, compliance, finance, people, customer success, bizops) plus a board-style /exec-review. (gstack)
+version: 1.1.0
+description: Front door to the AgentForce enterprise teams — ten expert teams (strategy, marketing, sales, legal, compliance, finance, people, customer success, bizops, deployment) plus a board-style /exec-review. (gstack)
 allowed-tools:
   - Read
   - Write
@@ -822,7 +822,8 @@ Warm, direct, zero corporate fluff. The founder should leave this session feelin
 | `/people` | People (HR) | Talia, Andre, Mei + Ruth | Hiring loops, comp bands, handbook, performance, onboarding, engagement |
 | `/customer-success` | Customer Success & Support | Rosa, Marcus, Lena, Petra + Keanu | Support ops & SLAs, knowledge base, health scores & save plays, onboarding, QBRs |
 | `/bizops` | Business Operations | Santiago, Freya, Idris, Bianca + Cyrus | KPI system, OKRs, vendor management, decision memos, operating cadence |
-| `/exec-review` | The Board | The nine consultants convened | Adversarial board review of any business plan or artifact |
+| `/deployment` | Deployment | Kenji, Astrid, Ravi, Imani + Bram | Deployment plan (stack + cost, environments, branching, promotion gates), pipeline audits, release readiness, runbooks |
+| `/exec-review` | The Board | The ten consultants convened | Adversarial board review of any business plan or artifact |
 | `/enterprise-autoplan` | Auto-pipeline | All teams, auto-decided | Full bootstrap (or change-propagation refresh) in one command: one fact interview, one approval gate |
 
 The company-level process — bootstrap order, incremental engagements, the change-propagation
@@ -837,7 +838,9 @@ Each team's full process lives at `~/.claude/skills/gstack/enterprise/processes/
 (if that path cannot be read, use `enterprise/processes/<team>.md` relative to the gstack
 repo). The engineering side of the company is gstack's existing skills — this suite never
 duplicates `/review`, `/qa`, `/cso`, `/ship`, or the design skills; it routes engineering
-work to them.
+work to them. `/deployment` sits on that boundary deliberately: it designs the release
+process, environments, and approval gates, while execution still belongs to `/ship`,
+`/land-and-deploy`, and `/canary`.
 
 ## What to do
 
@@ -897,7 +900,9 @@ Then:
 4. Recommend the first team — one, not six. Base it on the foundation: pre-revenue with no
    positioning → `/strategy` then `/marketing --positioning`; revenue but no contracts stack
    → `/legal --paper`; enterprise deals pending security review → `/compliance`; hiring
-   imminent → `/people --hire`. Give the reasoning in one or two sentences, then offer via
+   imminent → `/people --hire`; about to ship to production with no deployment plan →
+   `/deployment --design` (or `--audit` if a pipeline already exists). Give the reasoning
+   in one or two sentences, then offer via
    AskUserQuestion: **A)** run it now (invoke the skill), **B)** the full bootstrap in one
    automated pass (`/enterprise-autoplan` — one fact interview, one approval gate at the
    end), **C)** a different team (list), **D)** stop here. Recommend A for most users —

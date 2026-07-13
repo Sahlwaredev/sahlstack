@@ -2,7 +2,7 @@
 name: enterprise-autoplan
 preamble-tier: 3
 interactive: true
-version: 1.0.0
+version: 1.0.1
 description: Auto-pipeline for the enterprise plan — the /autoplan of the business side. (gstack)
 allowed-tools:
   - Read
@@ -34,7 +34,7 @@ zero interruptions during, taste decisions and user challenges surfaced at a fin
 approval gate, then a /exec-review board pass. Use when asked to "build the whole
 enterprise plan", "enterprise autoplan", "run all the business teams", or "bootstrap
 my company plan automatically". Proactively suggest when a user wants the full
-enterprise bootstrap without sitting through nine interactive engagements.
+enterprise bootstrap without sitting through ten interactive engagements.
 
 ## Preamble (run first)
 
@@ -836,7 +836,7 @@ These rules auto-answer every intermediate question:
 2. **Choose completeness** — produce the whole artifact the loaded skill requires; cover
    more failure modes, not fewer.
 3. **Right-size to stage** — apply the stage-calibration table from PROCESS.md. A
-   pre-revenue two-founder company gets the minimum set done excellently, not nine
+   pre-revenue two-founder company gets the minimum set done excellently, not ten
    half-relevant programs. Oversized process is a defect, not thoroughness.
 4. **Evidence over optimism** — ICPs from closed-won data, SLAs from historical
    distribution, benchmarks WebSearched and dated, positioning claims with proof. Where
@@ -849,7 +849,7 @@ These rules auto-answer every intermediate question:
 
 **Conflict resolution:** strategy/marketing/sales phases — P2 + P4 dominate.
 Legal/compliance/finance phases — P1 + P4 dominate (risk work errs complete and
-evidenced). Activation phases (CS/people/bizops) — P3 + P5 dominate.
+evidenced). Activation phases (CS/people/bizops/deployment) — P3 + P5 dominate.
 
 ---
 
@@ -967,7 +967,7 @@ prior's artifacts):
 | 2 | Positioning + ICP | `enterprise-marketing/SKILL.md`, then `enterprise-sales/SKILL.md` | `--positioning`; `--icp` |
 | 3 | Finance | `enterprise-finance/SKILL.md` | `--model` → `--runway` (+ `--pricing-study` if Phase 1 produced a WTP study spec) |
 | 4 | Legal & compliance | `enterprise-compliance/SKILL.md`, then `enterprise-legal/SKILL.md` | `--applicability`; `--paper` (stage-gated) |
-| 5 | Activation | marketing / sales / customer-success / people / bizops skill files | per the stage-calibration table |
+| 5 | Activation | marketing / sales / customer-success / people / bizops / deployment skill files | per the stage-calibration table (`/deployment --design` when anything ships to production and no plan of record exists; `--audit` when a pipeline already exists) |
 | 6 | Board pass | `enterprise-review/SKILL.md` | target: `docs/enterprise/` |
 
 Skill files live at `~/.claude/skills/gstack/enterprise-<team>/SKILL.md` (fallback:

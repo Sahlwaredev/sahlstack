@@ -38,6 +38,7 @@ And the same three iron rules:
 | [people.md](people.md) | `/people` |
 | [customer-success.md](customer-success.md) | `/customer-success` |
 | [bizops.md](bizops.md) | `/bizops` |
+| [deployment.md](deployment.md) | `/deployment` |
 
 `/exec-review` has no process doc of its own: it is the review gate the other processes call
 for cross-domain plans, and the natural final step before a review PR is opened.

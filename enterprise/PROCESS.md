@@ -42,9 +42,10 @@ auto-decisions — one command, the whole bootstrap, only facts and taste decisi
 /legal --paper
       ↓
 /marketing --plan                Phase 5 — activation (as stage demands):
-/sales --playbook, --outbound      GTM plan, sales system, support ops, hiring, cadence
-/customer-success --support
+/sales --playbook, --outbound      GTM plan, sales system, support ops, hiring, cadence,
+/customer-success --support        deployment plan
 /people --hire · /bizops --metrics, --okr
+/deployment --design | --audit
       ↓
 /exec-review docs/enterprise/    Phase 6 — the board pass over the assembled plan
       ↓
@@ -69,9 +70,9 @@ you explicitly want the whole gauntlet in one pass.
 
 | Stage | Minimum set | Defer until real |
 |-------|-------------|------------------|
-| Pre-revenue, <5 people | Foundation, `/strategy` (all modes), `/marketing --positioning`, `/finance --runway`, `/compliance --applicability` | Sales system (founder sells), legal paper beyond an NDA, CS/people/bizops programs |
-| First customers, <$1M ARR | + `/sales --icp` + `--playbook`, `/legal --paper`, `/finance --model`, `/customer-success --support` (internal SLAs) | Comp bands, QBR program, formal OKRs |
-| Growing, $1M+ ARR or 10+ people | The full Phase 1–5 set | Nothing — all nine teams have work |
+| Pre-revenue, <5 people | Foundation, `/strategy` (all modes), `/marketing --positioning`, `/finance --runway`, `/compliance --applicability`, `/deployment --design` (the moment anything ships to production) | Sales system (founder sells), legal paper beyond an NDA, CS/people/bizops programs, readiness reviews (standard-class gates suffice) |
+| First customers, <$1M ARR | + `/sales --icp` + `--playbook`, `/legal --paper`, `/finance --model`, `/customer-success --support` (internal SLAs), `/deployment --audit` + `--runbook` | Comp bands, QBR program, formal OKRs |
+| Growing, $1M+ ARR or 10+ people | The full Phase 1–5 set | Nothing — all ten teams have work |
 
 ---
 
@@ -124,7 +125,9 @@ When a team's plan changes in a way other teams consume, two rules come first:
 | **ICP change** (`/sales --icp`) | `/marketing --plan` (channels follow the customer); `/sales --outbound` lists + sequences | `/customer-success` segmentation + health model per segment; `/strategy --landscape` if the segment implies new competitors | Only if it changes the market thesis |
 | **New geography / jurisdiction** | `/compliance --applicability`; `/legal --paper` deltas (governing law, DPA modules); `/people` state addenda if hiring there | `/finance` — flag tax nexus for the CPA | **Yes** |
 | **New data collection, AI feature, or subprocessor** | `/compliance --privacy` (data map/RoPA/policy delta) and `--ai` for AI features; `/legal` ToS/DPA delta | `/marketing` claims check ("we never train on your data" must stay true) | Only if customer-facing claims or contracts change |
-| **Tier 1 launch** | `/marketing --launch` (owns it); `/sales` enablement delta; `/customer-success` readiness (macros, KB, staffing for the spike); `/legal` claims review | `/compliance` if the feature touches new data | **Yes** for Tier 1; Tier 2/3 need only the marketing consultant gate |
+| **Tier 1 launch** | `/marketing --launch` (owns it); `/deployment --readiness` (the launch ships through the release gate); `/sales` enablement delta; `/customer-success` readiness (macros, KB, staffing for the spike); `/legal` claims review | `/compliance` if the feature touches new data | **Yes** for Tier 1; Tier 2/3 need only the marketing consultant gate |
+| **Deployment stack / platform change** (`/deployment --design` revision) | `/deployment --runbook` re-issue; `/setup-deploy` re-run (deploy config of record) | `/finance --finops` (cost posture); `/compliance --applicability` if data residency moves | Only if customer-facing SLAs, pricing posture, or data location change |
+| **Deploy-caused Sev 1 incident, or promised SLA at risk** | `/deployment --audit` (post-mortem feeds it); `/customer-success` comms | `/legal` if SLA credits are owed | No — unless the fix requires an SLA or architecture change |
 | **Headcount plan change / first hire in a new state** | `/people` (scorecard or state compliance); `/finance --runway` | `/bizops --okr` if goals shift | No — unless runway impact is material or it's a RIF (RIF → attorney + board pass) |
 | **Fundraise** | `/finance --raise`; `/legal --corporate` (data room, consents) | `/strategy` narrative refresh | **Yes**, before anything is sent to an investor |
 | **Non-standard enterprise deal** (terms outside the playbook) | `/legal --review`; `/finance` (discount/rev-rec impact); `/customer-success` SLA feasibility check | — | No — deal-desk pattern; escalate to a board pass only for precedent-setting terms (MFN, unlimited liability asks) |
@@ -135,7 +138,7 @@ When a team's plan changes in a way other teams consume, two rules come first:
 
 ## The board pass — `/exec-review`
 
-`/exec-review` convenes the nine consultants over a target (a doc, a directory, or the
+`/exec-review` convenes the ten consultants over a target (a doc, a directory, or the
 whole `docs/enterprise/` plan of record) and hunts cross-domain contradictions: pricing
 that breaks the compliance posture, hiring the runway can't fund, launch claims legal
 can't defend.
@@ -179,7 +182,7 @@ Same law as the development process:
 |--------|-----------|-------------|
 | Weekly | WBR (metrics vs plan, exceptions only); pipeline review; support queue health | `/bizops`, `/sales`, `/customer-success` |
 | Monthly | Close + BvA + investor update; VoC synthesis; content/SEO refresh check | `/finance`, `/customer-success --voc`, `/marketing` |
-| Quarterly | OKR score + reset; **board pass over the plan of record**; win-loss report; comp/benchmark sanity check; vendor renewal sweep | `/bizops --okr`, `/exec-review`, `/marketing`, `/people`, `/bizops --vendor` |
+| Quarterly | OKR score + reset; **board pass over the plan of record**; win-loss report; comp/benchmark sanity check; vendor renewal sweep; pipeline audit refresh (DORA re-score, break-glass log, cost re-check) | `/bizops --okr`, `/exec-review`, `/marketing`, `/people`, `/bizops --vendor`, `/deployment --audit` |
 | 90 days | Foundation docs `Last reviewed` refresh (every skill nags when stale) | `/enterprise` |
 
 ## FAQ

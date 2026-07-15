@@ -1198,8 +1198,15 @@ all states", never "no attorney needed".
    ```
 4. Update `docs/enterprise/legal/INDEX.md`: one line per artifact (date, mode, file link,
    review gate).
-5. Print the handoff summary: what was produced, the verdict, and **the human to-do list** —
-   each as a checkbox. Typical items: have counsel review and approve; sign (officers only —
+5. **Write the human to-do list to its own checklist FILE, never buried** (Action Checklist
+   convention, `enterprise/PROCESS.md`): when there are 3+ human items, write
+   `docs/enterprise/legal/action-checklist-<slug>-<YYYY-MM-DD>.md` with the standard header, an
+   `<!-- af-manual-action -->` marker block (title · `labels: af-manual-action,
+   af-manager-review` · `checklist:` path · `owner:`) so the planner opens a tagged issue
+   pointing at it, a "How to use this" line, ordered `- [ ]` steps with time estimates and
+   blocking-path markers, and the review-gate footer; link it from INDEX.md. Then print a SHORT
+   handoff pointing to the file (don't reprint the list); fewer than 3 items → inline
+   checkboxes are fine. Candidate items: have counsel review and approve; sign (officers only —
    this team never executes); file with the state / USPTO / IRS; send to the counterparty;
    calendar the renewal/notice dates; mail the 83(b) with proof; connect the e-signature and
    contract-repository accounts.

@@ -1221,8 +1221,15 @@ customer conversations validate it), never guarantee rankings, citations, or CAC
    required (regulatory/claims counsel).
 3. Update `docs/enterprise/marketing/INDEX.md`: one line per artifact (date, mode, file link,
    review gate).
-4. Print the handoff summary: what was produced, the verdict, and **the human to-do list** —
-   only-human items as checkboxes. Typical items:
+4. **Write the human to-do list to its own checklist FILE, never buried** (Action Checklist
+   convention, `enterprise/PROCESS.md`): when there are 3+ human items, write
+   `docs/enterprise/marketing/action-checklist-<slug>-<YYYY-MM-DD>.md` with the standard
+   header, an `<!-- af-manual-action -->` marker block (title · `labels: af-manual-action,
+   af-manager-review` · `checklist:` path · `owner:`) so the planner opens a tagged issue
+   pointing at it, a "How to use this" line, and ordered `- [ ]` steps with time estimates +
+   blocking-path markers; link it from INDEX.md. Then print a SHORT handoff pointing to the
+   file (don't reprint the list); fewer than 3 items → inline checkboxes are fine. Candidate
+   items:
    - [ ] Sign off the positioning canvas with product + sales in the room (record names/date)
    - [ ] Approve budget and any vendor/agency commitments
    - [ ] Connect ad accounts, MAP/CRM, analytics; make DNS/domain changes

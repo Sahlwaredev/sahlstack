@@ -833,7 +833,9 @@ gstack repo). Read it when routing anything beyond a single-team request.
 
 Every team follows the same operating pattern: foundation docs first, expert interrogation
 before drafting, named-persona work, an independent consultant's adversarial review, quality
-gates, then dated artifacts in `docs/enterprise/<team>/` with an explicit human to-do list.
+gates, then dated artifacts in `docs/enterprise/<team>/` — with the human to-do items in their
+own dated **action-checklist file** (never buried in a footer or chat) per the Action Checklist
+convention in `enterprise/PROCESS.md`, tagged for the planner to open as an issue.
 Each team's full process lives at `~/.claude/skills/gstack/enterprise/processes/<team>.md`
 (if that path cannot be read, use `enterprise/processes/<team>.md` relative to the gstack
 repo). The engineering side of the company is gstack's existing skills — this suite never

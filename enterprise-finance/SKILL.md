@@ -1197,12 +1197,19 @@ Never claim more than the work supports: never "GAAP-compliant," never "audit-re
    (CPA / securities attorney / qualified appraiser — name which).
 3. Update `docs/enterprise/finance/INDEX.md`: one line per artifact (date, mode, file link,
    review gate).
-4. Print the handoff summary: what was produced, the verdict, and **the human to-do list** —
-   only things a human can do, each as a checkbox. Examples by mode: build the spreadsheet
-   from the spec and confirm the BS balances (`--model`); approve the budget at the board
-   (`--board`); engage the 409A appraiser and securities attorney, send the deck (`--raise`);
-   apply the pricing change in the billing system (`--pricing-study`); execute the
-   rightsizing in the cloud console (`--finops`); wire/banking actions (always human).
+4. **Write the human to-do list to its own checklist FILE, never buried** (Action Checklist
+   convention, `enterprise/PROCESS.md`): when there are 3+ human items, write
+   `docs/enterprise/finance/action-checklist-<slug>-<YYYY-MM-DD>.md` with the standard header,
+   an `<!-- af-manual-action -->` marker block (title · `labels: af-manual-action,
+   af-manager-review` · `checklist:` path · `owner:`) so the planner opens a tagged issue
+   pointing at it, a "How to use this" line, ordered `- [ ]` steps with time estimates +
+   blocking-path markers, and the review-gate footer; link it from INDEX.md. Then print a SHORT
+   handoff pointing to the file (don't reprint the list); fewer than 3 items → inline
+   checkboxes are fine. Candidate items by mode: build the spreadsheet from the spec and
+   confirm the BS balances (`--model`); approve the budget at the board (`--board`); engage the
+   409A appraiser and securities attorney, send the deck (`--raise`); apply the pricing change
+   in the billing system (`--pricing-study`); execute the rightsizing in the cloud console
+   (`--finops`); wire/banking actions (always human).
 5. Recommend the process doc: "This team's operating process is defined in
    `~/.claude/skills/gstack/enterprise/processes/finance.md` — commit these artifacts on a
    branch and open a PR titled `docs: finance <mode> review package` per that process."

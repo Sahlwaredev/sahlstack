@@ -1200,8 +1200,15 @@ requirements current as of <date>; attorney review required before use."
    `Licensed professional required (employment attorney)`.
 3. Update `docs/enterprise/people/INDEX.md`: one line per artifact (date, mode, file link,
    review gate).
-4. Print the handoff summary: what was produced, the verdict, and **the human to-do list** —
-   only-human items as checkboxes, e.g.:
+4. **Write the human to-do list to its own checklist FILE, never buried** (Action Checklist
+   convention, `enterprise/PROCESS.md`): when there are 3+ human items, write
+   `docs/enterprise/people/action-checklist-<slug>-<YYYY-MM-DD>.md` with the standard header,
+   an `<!-- af-manual-action -->` marker block (title · `labels: af-manual-action,
+   af-manager-review` · `checklist:` path · `owner:`) so the planner opens a tagged issue
+   pointing at it, a "How to use this" line, and ordered `- [ ]` steps with time estimates +
+   blocking-path markers; link it from INDEX.md. Then print a SHORT handoff pointing to the
+   file (don't reprint the list); fewer than 3 items → inline checkboxes are fine. Candidate
+   items, e.g.:
    - [ ] Send the offer (founder signs; verify board approved the option grant first)
    - [ ] Engage employment counsel for the handbook / PIP / severance items flagged above
    - [ ] Hold the termination conversation (a human conversation, always)

@@ -1100,15 +1100,7 @@ Verdict line: `VERDICT: READY FOR HUMAN REVIEW` or `VERDICT: NEEDS WORK — <wha
    ```
    Typical gates: macro library and KB articles → AI-final (with sampled human QA); SLA policy, health score spec, QBR deck, VoC report → Human review recommended; anything feeding contractual SLA commitments or incident/security external communications → Licensed professional required (attorney) before external use.
 3. Update `docs/enterprise/customer-success/INDEX.md`: one line per artifact (date, mode, file link, review gate).
-4. Print the handoff summary: what was produced, the verdict, and **the human to-do list** — the things only a human can do, each as a checkbox. Draw from: sign off on contractual SLA language before it enters any contract; deliver the QBR live; make the renewal/expansion negotiation call (the brief is ready); approve concessions above authority limits; run churn exit interviews; instrument the first-value event (or connect analytics); connect the helpdesk/CS tooling accounts; send any customer-facing communication drafted here. Format:
-
-   ```
-   ## Customer Success — <mode> engagement complete
-   Artifacts: <list with paths>
-   VERDICT: <from Phase 5>
-   ### Human to-do (only you can do these)
-   - [ ] <item — why it needs a human, target date if any>
-   ```
+4. **Write the human to-do list to its own checklist FILE, never buried** (Action Checklist convention, `enterprise/PROCESS.md`): when there are 3+ human items, write `docs/enterprise/customer-success/action-checklist-<slug>-<YYYY-MM-DD>.md` with the standard header, an `<!-- af-manual-action -->` marker block (title · `labels: af-manual-action, af-manager-review` · `checklist:` path · `owner:`) so the planner opens a tagged issue pointing at it, a "How to use this" line, and ordered `- [ ]` steps with time estimates + blocking-path markers; link it from INDEX.md. Then print a SHORT handoff that points to the file (don't reprint the list); fewer than 3 items → inline checkboxes are fine. Candidate items: sign off on contractual SLA language before it enters any contract; deliver the QBR live; make the renewal/expansion negotiation call (the brief is ready); approve concessions above authority limits; run churn exit interviews; instrument the first-value event (or connect analytics); connect the helpdesk/CS tooling accounts; send any customer-facing communication drafted here.
 5. Recommend the process doc: "This team's operating process is defined in `~/.claude/skills/gstack/enterprise/processes/customer-success.md` — commit these artifacts on a branch and open a PR titled `docs: customer-success <mode> review package` per that process."
 
 ## What this team never does (human boundary)

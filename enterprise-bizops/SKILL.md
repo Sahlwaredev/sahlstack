@@ -1200,8 +1200,15 @@ closed deal; a spend-recovery estimate is an estimate until invoices confirm it.
    touching contract legal terms → note "have counsel review termination/liability terms".
 3. Update `docs/enterprise/bizops/INDEX.md`: one line per artifact (date, mode, file
    link, review gate).
-4. Print the handoff summary: what was produced, the verdict, and **the human to-do
-   list** — the things only a human can do, each as a checkbox. Typical items by mode:
+4. **Write the human to-do list to its own checklist FILE, never buried** (Action Checklist
+   convention, `enterprise/PROCESS.md`): when there are 3+ human items, write
+   `docs/enterprise/bizops/action-checklist-<slug>-<YYYY-MM-DD>.md` with the standard header,
+   an `<!-- af-manual-action -->` marker block (title · `labels: af-manual-action,
+   af-manager-review` · `checklist:` path · `owner:`) so the planner opens a tagged issue
+   pointing at it, a "How to use this" line, and ordered `- [ ]` steps with time estimates +
+   blocking-path markers; link it from INDEX.md. Then print a SHORT handoff pointing to the
+   file (don't reprint the list); fewer than 3 items → inline checkboxes are fine. Candidate
+   items by mode:
    - [ ] Sign the vendor contract / approve the spend (named approver)
    - [ ] Make the negotiation call (brief and BATNA are in the artifact)
    - [ ] Do the reference calls (peers are only candid human-to-human)

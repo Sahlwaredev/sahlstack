@@ -6,6 +6,21 @@ current upstream base (`<upstream X.Y.Z>.<fork build>`), so upstream's own
 `X.Y.Z.0` releases never collide. Upstream changes stay in the root `CHANGELOG.md`;
 fork changes are logged here to keep upstream merges clean.
 
+## v1.58.5.3 — 2026-07-15
+
+- **Action Checklist convention (all enterprise teams):** every team engagement now writes
+  its human to-do items to a dedicated, dated **checklist file**
+  (`docs/enterprise/<team>/action-checklist-<slug>-<YYYY-MM-DD>.md`) that the user checks off
+  as they progress — never buried in an artifact footer or left only in chat. Each file
+  carries the standard header, an `<!-- af-manual-action -->` marker block (so the planner
+  opens a correctly-tagged `af-manual-action` + `af-manager-review` issue pointing at the
+  file), a "How to use this" line, and ordered `- [ ]` steps with time estimates + blocking
+  markers. The printed handoff becomes a short pointer to the file. Threshold: 3+ human items.
+  Canonical convention added to `enterprise/PROCESS.md`; Phase 6 updated in all ten team
+  `SKILL.md.tmpl` (legal, marketing, sales, compliance, finance, people, bizops, strategy,
+  deployment, customer-success), plus the `/enterprise` front door and `/enterprise-autoplan`
+  validation. Requested by the founder after the legal `--ip` and SahlWorks naming engagements.
+
 ## v1.58.5.2 — 2026-07-12
 
 - **Deployment team** (`/deployment`, `enterprise-deployment/`): tenth enterprise team —

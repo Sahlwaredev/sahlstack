@@ -1251,8 +1251,15 @@ unless someone actually ran it.
    to customers → route to `/legal` before they're promised (contract language is theirs).
 3. Update `docs/enterprise/deployment/INDEX.md`: one line per artifact (date, mode, file
    link, review gate).
-4. Print the handoff summary: what was produced, the verdict, and **the human to-do
-   list** — only-human items as checkboxes. Typical items:
+4. **Write the human to-do list to its own checklist FILE, never buried** (Action Checklist
+   convention, `enterprise/PROCESS.md`): when there are 3+ human items, write
+   `docs/enterprise/deployment/action-checklist-<slug>-<YYYY-MM-DD>.md` with the standard
+   header, an `<!-- af-manual-action -->` marker block (title · `labels: af-manual-action,
+   af-manager-review` · `checklist:` path · `owner:`) so the planner opens a tagged issue
+   pointing at it, a "How to use this" line, and ordered `- [ ]` steps with time estimates +
+   blocking-path markers; link it from INDEX.md. Then print a SHORT handoff pointing to the
+   file (don't reprint the list); fewer than 3 items → inline checkboxes are fine. Candidate
+   items:
    - [ ] Approve the deployment plan (the risk posture is yours)
    - [ ] Create platform/cloud accounts and connect billing
    - [ ] Add secrets to the CI/platform secret store (agents never handle secret values)

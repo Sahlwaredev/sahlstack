@@ -2,7 +2,7 @@
 name: marketing
 preamble-tier: 3
 interactive: true
-version: 1.0.0
+version: 1.1.0
 description: "Full marketing department: positioning sprints (April Dunford method), tiered product launches with every asset drafted, content engine with a GEO (AI-citation) layer, SEO/GEO/funnel/messaging... (gstack)"
 allowed-tools:
   - Read
@@ -22,6 +22,11 @@ triggers:
   - launch plan
   - content strategy
   - seo audit
+  - product name
+  - naming
+  - name candidates
+  - rename
+  - brand name
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->
@@ -30,7 +35,7 @@ triggers:
 ## When to invoke this skill
 
 Use when asked to "write our positioning", "plan this launch", "content strategy",
-"audit our site", or "marketing plan".
+"audit our site", "name this product", or "marketing plan".
 Proactively suggest when the user is about to spend on ads or write website copy
 and no positioning doc exists in docs/enterprise/marketing/.
 
@@ -857,11 +862,21 @@ expertise, not for theater. Never use more than one persona voice per paragraph.
 - `/marketing --launch` — tiered launch: brief, three-layer checklist, all launch assets drafted (Priya + Zara)
 - `/marketing --content` — content strategy, topic clusters, editorial calendar, GEO layer (Zara + Felix)
 - `/marketing --audit` — SEO/GEO + funnel + messaging audit of the live site via WebFetch (Felix + Omar)
+- `/marketing --naming` — generate + screen product-name candidates across five lanes; Simone adversarial pass (Priya leads)
 - `/marketing --plan` — quarterly GTM/marketing plan (whole team)
 
 Also honor a free-text request that clearly matches a mode (skip the selection question).
 "Write our positioning" → `--positioning`. "We're shipping X next month" → `--launch`.
-"Why isn't our blog working" → `--audit` or `--content` (ask which).
+"Why isn't our blog working" → `--audit` or `--content` (ask which). "Name this product" /
+"we need a new name" → `--naming`.
+
+**`--naming` is the marketing half of the cross-team naming loop.** The candidate shortlist
+this mode produces is the input to the legal team's trademark knockout (`/legal --ip`); the two
+alternate until a name clears. In the automated AgentForce pipeline a naming-manager (Mira)
+orchestrates that loop and decides between rounds — but this mode is also runnable standalone.
+When a round is a re-generation (a prior shortlist was knocked out), read the latest
+`docs/enterprise/legal/trademark-knockout-*.md` and the naming-manager's redirect first, and
+treat every name on the kill list as burned.
 
 **Playbook paths:** before drafting any artifact, Read its template from
 `~/.claude/skills/gstack/enterprise-marketing/playbooks/<file>.md`. If that path cannot be
@@ -873,6 +888,7 @@ read, read `enterprise-marketing/playbooks/<file>.md` relative to the repo root 
 | `launch.md` | --launch, launch calendar in --plan |
 | `content-engine.md` | --content, content sections of --plan |
 | `audit.md` | --audit |
+| `naming.md` | --naming |
 
 ## Phase 0: Foundation check
 
@@ -934,7 +950,7 @@ On every later run, if a foundation doc is >90 days old, note it and offer a ref
 
 ## Phase 1: Mode selection
 
-AskUserQuestion with the five modes (group as two questions if needed; max 4 options per
+AskUserQuestion with the six modes (group as two questions; max 4 options per
 question). Include a RECOMMENDATION with reasoning based on Phase 0 evidence. Ordering logic:
 
 - No positioning doc, or positioning is "contested" → recommend `--positioning` first.
@@ -943,6 +959,7 @@ question). Include a RECOMMENDATION with reasoning based on Phase 0 evidence. Or
 - Positioning exists + organic is the chosen motion → `--content`.
 - Live site + "nothing is working / where do we stand?" → `--audit` (it produces the evidence
   the other modes consume).
+- The product needs a name (new product, or legal blocked the current one) → `--naming`.
 - Quarter boundary or "what should marketing do?" → `--plan`.
 
 Prerequisites are soft. If the user picks `--launch` with no positioning:
@@ -1017,6 +1034,27 @@ Work through the input side of Dunford's process (steps 1–3) as questions:
    WebSearch, confirmed by the user. These become the AI-visibility test prompts.
 4. Known symptoms: "traffic but no signups", "no traffic", "leads don't convert" — shapes
    where the audit digs deepest.
+
+### --naming discovery (Priya)
+
+The brief is usually short — a product to name and a reason. Gather the naming inputs from the
+repo and positioning BEFORE asking anything; a naming sprint runs on the positioning corpus, not
+fresh interviews.
+
+1. **What is being named, and why now?** New product, or a forced rename (legal blocked the
+   incumbent — read the blocking `docs/enterprise/legal/trademark-*.md` if it exists). Capture
+   the incumbent name and exactly why it died.
+2. **House-brand context.** Is there a parent/house brand a new name should harmonize with (a
+   compound like `<House>Works`)? Read `docs/enterprise/foundation.md` for the company name.
+3. **Positioning fit.** Read the latest `docs/enterprise/marketing/positioning-*.md`: the
+   category, the buyer, the one-line promise. The name must fit this story, not fight it.
+4. **Delivery surface + namespaces that matter.** For a developer/software product the
+   **GitHub org handle is the primary customer touchpoint** — weight it heavily alongside
+   `.com`/`.ai`/`.dev` domains and npm/PyPI scopes. Note any hard constraints (must be
+   pronounceable on a call, must not collide with a funded competitor).
+5. **Constraints & no-go list.** Cross-language slang to avoid (target markets), any names
+   already rejected by the founder, and — on a re-generation round — the kill list from the
+   prior `product-naming-*.md` and the naming-manager's redirect. Every killed name is burned.
 
 ### --plan discovery (whole team)
 
@@ -1127,6 +1165,32 @@ Execute April Dunford's process operationally, steps 4–10 (steps 1–3 were di
    AI visibility, messaging/funnel, then the prioritized opportunity model and a
    roadmap ordered by impact/effort with owners.
 
+### --naming: product-name generation (Priya leads)
+
+1. Read `naming.md`. It defines the five generation lanes, the scored quality-gate table, and
+   the kill-list convention.
+2. **Generate ~15 candidates spread across the five lanes** (descriptive, evocative, invented,
+   compound/house-brand, cross-language) — never all from one lane; picked-over lanes get
+   exhausted fast. On a re-generation round, shift lanes deliberately away from whatever the
+   prior rounds over-mined (the kill list shows what is burned).
+3. **Screen hard, in waves.** For each surviving candidate WebSearch the mark and check, at
+   minimum: obvious existing-product/company collisions, `.com`/`.ai`/`.dev` resolution, the
+   **GitHub org handle**, npm/PyPI scope, and cross-language slang. Anything that fails an
+   availability or collision screen is moved to the kill list with its evidence — never
+   silently dropped. (This is a marketing pre-screen, not legal clearance — the legal knockout
+   is a separate, deeper pass.)
+4. **Score the shortlist** against the quality-gate table in `naming.md` (availability incl.
+   GitHub handle, trademark-strength intuition, radio test, concept/positioning fit,
+   house-brand fit). Carry forward the **2–4 strongest** as the shortlist; everything else is
+   on the kill list.
+5. **Simone's adversarial pass runs in Phase 4** as usual — she kills weak candidates and
+   issues an endorse/reject verdict on the shortlist. Fold her kills into the kill list.
+6. The artifact is a `product-naming-<name>-<date>.md` (the `<name>` slug is the lead
+   candidate). It MUST contain: the scored shortlist, the etymology/why-it-wins for each
+   shortlisted name, the **kill-list table** (`Candidate | Lane | Killed by | Evidence`,
+   killed-by ∈ {screen, Simone, founder, legal}), and a closing line stating the shortlist
+   hands off to the legal knockout (`/legal --ip`). This is the round's input to the loop.
+
 ### --plan: quarterly GTM plan (whole team)
 
 1. Read all four playbooks' summary sections as needed; the plan links to canvases and
@@ -1197,6 +1261,7 @@ Self-score each gate with evidence, not vibes:
 | Content | Information-gain thesis stated; named author; distribution plan per piece; GEO requirements attached; CTA↔stage match | ☐ | |
 | Launch | Tier justified in writing; enablement ≥2 weeks pre-launch scheduled; 3 layers checked; metrics pre-registered | ☐ | |
 | Channel/plan | Kill criteria per channel; CAC/payback stated; capture-before-create ordering; ≥2 attribution methods; no paid scaling before activation evidence | ☐ | |
+| Naming | ≥15 candidates across ≥3 lanes; every candidate availability-screened (incl. GitHub handle) with evidence; kill list complete; 2–4 shortlisted; hands off to legal knockout | ☐ | |
 | Analytics hygiene | UTM taxonomy defined; MQL/PQL definition has a quarterly audit trigger | ☐ | |
 
 Only score gates relevant to the mode; mark others N/A. Verdict line:
@@ -1217,8 +1282,10 @@ customer conversations validate it), never guarantee rankings, citations, or CAC
    ```
    Typical gates: editorial calendar, briefs, audit → AI-final. Positioning canvas, messaging
    house, GTM plan, Tier 1 launch kit → Human review recommended (founder sign-off is the
-   point). Claims in regulated industries (health, finance, legal) → Licensed professional
-   required (regulatory/claims counsel).
+   point). A `--naming` shortlist → Human review recommended, and its `Engagement:` line is
+   `naming sprint` (the shortlist is not a cleared name — legal knockout + a professional
+   full search gate any filing). Claims in regulated industries (health, finance, legal) →
+   Licensed professional required (regulatory/claims counsel).
 3. Update `docs/enterprise/marketing/INDEX.md`: one line per artifact (date, mode, file link,
    review gate).
 4. **Write the human to-do list to its own checklist FILE, never buried** (Action Checklist

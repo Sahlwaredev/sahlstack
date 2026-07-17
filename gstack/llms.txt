@@ -53,7 +53,7 @@ Conventions:
 - [/learn](learn/SKILL.md): Manage project learnings.
 - [/legal](legal/SKILL.md): Full legal department for software companies: contract review and redlining, SaaS contract stack generation (NDA/MSA/ToS/SLA/DPA), IP chain-of-title and OSS license audits, corporate hygiene and board consents, and employment document drafting — all delivered as attorney-review-ready work product.
 - [/make-pdf](make-pdf/SKILL.md): Turn any markdown file into a publication-quality PDF.
-- [/marketing](marketing/SKILL.md): Full marketing department: positioning sprints (April Dunford method), tiered product launches with every asset drafted, content engine with a GEO (AI-citation) layer, SEO/GEO/funnel/messaging audits of the live site, and quarterly GTM plans.
+- [/marketing](marketing/SKILL.md): Full marketing department: positioning sprints (April Dunford method), tiered product launches with every asset drafted, content engine with a GEO (AI-citation) layer, SEO/GEO/funnel/messaging audits of the live site, product-name generation, and quarterly GTM plans.
 - [/office-hours](office-hours/SKILL.md): YC Office Hours — two modes.
 - [/open-gstack-browser](open-gstack-browser/SKILL.md): Launch GStack Browser — AI-controlled Chromium with the sidebar extension baked in.
 - [/pair-agent](pair-agent/SKILL.md): Pair a remote AI agent with your browser.

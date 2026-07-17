@@ -130,7 +130,7 @@
     },
     "enterprise-marketing": {
       "lead": "Full marketing department: positioning sprints (April Dunford method), tiered product launches with every asset drafted, content engine with a GEO (AI-citation) layer, SEO/GEO/funnel/messaging...",
-      "routing": "Use when asked to \"write our positioning\", \"plan this launch\", \"content strategy\",\n\"audit our site\", or \"marketing plan\".\nProactively suggest when the user is about to spend on ads or write website copy\nand no positioning doc exists in docs/enterprise/marketing/.",
+      "routing": "Use when asked to \"write our positioning\", \"plan this launch\", \"content strategy\",\n\"audit our site\", \"name this product\", or \"marketing plan\".\nProactively suggest when the user is about to spend on ads or write website copy\nand no positioning doc exists in docs/enterprise/marketing/.",
       "voice_line": null
     },
     "enterprise-people": {

@@ -2,7 +2,7 @@
 name: legal
 preamble-tier: 3
 interactive: true
-version: 1.0.0
+version: 1.0.1
 description: "Full legal department for software companies: contract review and redlining, SaaS contract stack generation (NDA/MSA/ToS/SLA/DPA), IP chain-of-title and OSS license audits, corporate hygiene and... (gstack)"
 allowed-tools:
   - Read
@@ -1090,11 +1090,19 @@ read `enterprise-legal/playbooks/<file>.md` relative to the repo root instead.
    (MIT/BSD/Apache-2.0), review (LGPL/MPL), prohibited without approval (GPL/AGPL — AGPL's
    network clause is the SaaS killer, failure mode #8). Output the inventory, violations
    with remediation (replace / isolate / seek approval), and a NOTICE attribution file draft.
-3. **Trademark clearance.** WebSearch the mark: USPTO records, common-law uses, domains, app
-   stores. Apply the DuPont/Sleekcraft likelihood-of-confusion factors from `ip.md`. Output
-   a risk memo (clearable / risky / blocked, with the conflicting marks cited) and a filing
-   recommendation (classes 9 and 42 for software/SaaS; intent-to-use vs use-based). Note:
-   filing itself is human-executed; patent prosecution requires a registered practitioner.
+3. **Trademark clearance / knockout.** WebSearch the mark: USPTO records, common-law uses,
+   domains (and the **GitHub org handle** for developer products), app stores. Apply the
+   DuPont/Sleekcraft likelihood-of-confusion factors from `ip.md`. Output a risk memo
+   (clearable / risky / blocked, with the conflicting marks cited) and a filing recommendation
+   (classes 9 and 42 for software/SaaS; intent-to-use vs use-based). Note: filing itself is
+   human-executed; patent prosecution requires a registered practitioner.
+   **This is also the knockout phase of the cross-team naming loop** — when the input is a
+   marketing shortlist (`docs/enterprise/marketing/product-naming-*.md`), run the knockout on
+   each shortlisted candidate and write one `docs/enterprise/legal/trademark-knockout-<name>-<date>.md`
+   memo per candidate (or a combined memo), so the naming-manager and the next generation round
+   can read a per-name verdict. Keep the "unverified negatives" caveat explicit: TSDR/TESS and
+   Madrid Monitor block programmatic access, so a professional full search is a precondition to
+   filing, never a mitigation.
 
 ### --corporate (Victor leads)
 
